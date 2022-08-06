@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<div th:each="u:${shop}">
+<div th:text="${u.name}"></div>
+    <script th:inline="javaScript">
+        (function(){
+            /*<![CDATA[*/
+            var shopId = [[${u.id}]];
+            /*]]>*/
+            $.ajax({
+                type: "GET",
+                url: document.URL +'/shop/'+ shopId,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var numberItems=document.createElement("p1");
+                    numberItems.innerHTML=data.length;
+                    var parentNum=document.getElementById("num"+shopId);
+                    parentNum.appendChild(numberItems)
+
+                    for(let i=0; i<data.length; i++)
+                    {
+                        var ListeItems=document.createElement("div");
+                        ListeItems.innerHTML=data[i].name;
+                        var parentList=document.getElementById("items"+shopId);
+                        parentList.appendChild(ListeItems);
+                        console.log(data[i].name);
+                    }
+                }
+            });
+        })();
+    </script>
+    <div>
+    <p1 th:id="'num'+${u.id}"></p1>
+    <p1 th:text="'/'+${shoppingList.List.size}"></p1>
+    </div>
+    <div th:id="'items'+${u.id}"></div>
+    </br>
+
+</div>
+
+
+<a th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}}"> Back to ShoppingList </a>
+
+</body>
+</html>

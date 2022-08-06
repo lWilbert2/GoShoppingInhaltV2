@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:object="${product}" method="post">
+    <div>
+        <input type="text" name="subject" th:field="*{subject}">
+        <input type="submit" value="Search">
+    </div>
+</form>
+
+</body>
+</html>

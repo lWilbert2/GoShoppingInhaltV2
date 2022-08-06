@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const userId = [[${user.id}]];
+        const listId = [[${shoppinglist.id}]];
+        /*]]>*/
+        function addP(productId) {
+            $.ajax({
+                type: "GET",
+                url: "/users/"+userId+"/lists/"+listId+"/addProduct/" + productId,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    var quantity = res;
+                    document.getElementById(productId).innerHTML = quantity;
+                }
+            });
+        }
+
+        function deleteP(productId) {
+            $.ajax({
+                type: "GET",
+                url: "/users/"+userId+"/lists/"+listId+"/deleteProduct/"+ productId,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    var quantity = res;
+                    document.getElementById(productId).innerHTML = quantity;
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" th:inline="javascript">
+</script>
+<div class="container">
+    <div class="row">
+        <div class="col-xs">
+            <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/products'}">
+                <button class="btn btn-light">
+                    Alles
+                </button>
+            </a>
+        </div>
+        <div class="col-xs">
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/1/products'}">
+                <button class="btn btn-light">
+                    Vegan
+                </button>
+            </a>
+        </div>
+        <div class="col-xs">
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/2/products'}">
+                <button class="btn btn-light"
+                        th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/2/products'}">
+                    Vegetarisch
+                </button>
+            </a>
+        </div>
+        <div class="col-xs">
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/3/products'}">
+                <button class="btn btn-light">Alkohol
+                </button>
+            </a>
+        </div>
+        <div class="col-xs">
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/4/products'}">
+                <button class="btn btn-light">
+                    Gemüse
+                </button>
+            </a>
+        </div>
+        <div class="col-xs">
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/5/products'}">
+                <button class="btn btn-light">
+                    Obst
+                </button>
+            </a>
+        </div>
+        <div class="col-xs">
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/seasonal/products'}">
+                <button class="btn btn-light">
+                    Saisonal
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container" th:text="${category.name}"></div>
+<div class="container" th:each="u: ${product}">
+    <p>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${u.name}">Card title</h5>
+            <p class="card-text">
+            <div style="float:right" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-light" th:onclick="addP([[${u.id}]])">+</button>
+                    <button type="button" class="btn btn-light" th:id="${u.id}"></button>
+                    <script th:inline="javascript">
+                        (function () {
+                            /*<![CDATA[*/
+                            var productId = [[${u.id}]];
+                            /*]]>*/
+                            fetch('/users/'+userId+'/lists/'+listId+'/products/'+productId + '/getQuantity')
+                                .then(response => response.json())
+                                .then(function (data) {
+                                    var quantity = data;
+                                    console.log(quantity);
+                                    document.getElementById(productId).innerHTML = quantity;
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        })();
+                    </script>
+                    <button type="button" class="btn btn-light" th:onclick="deleteP([[${u.id}]])">-</button>
+                </div>
+            </div>
+            </p>
+            <p class="card-text">
+            <div style="float:left" th:each="v:${u.specifications}">
+                <button type="button" class="btn btn-light" th:onclick="addSpeci([[${u.id}]],[[${v.id}]])"
+                        th:text="${v.name}"></button>
+            </div>
+            <small class="text-muted"></small></p>
+        </div>
+    </div>
+</div>
+<a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}}">
+    <button class="btn btn-light btn-lg btn-block" align="center"> Back to ShoppingList
+    </button>
+</a>
+</body>
+</html>
