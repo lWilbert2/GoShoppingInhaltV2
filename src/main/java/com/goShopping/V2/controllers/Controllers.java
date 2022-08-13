@@ -90,7 +90,7 @@ public class Controllers {
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingListRepo.findById(id).get());
         model.addAttribute("product", productRepo.findAllOrderByNameAsc());
-
+        model.addAttribute("listitem", shoppingListRepo.findById(id).get().getList());
         return "products";
     }
 
@@ -131,6 +131,16 @@ public class Controllers {
         model.addAttribute("user", userRepository.findById(userId).get());
         return "category";
 
+    }
+
+    @GetMapping("statistic")
+    public String getStatistics(Model model, @PathVariable("userId") long userId)
+    {
+        List <StatisticItem> statisticItems= userRepository.findById(userId).get().getStatistics().getStatisticItemList();
+        List <StatisticShop> statisticShops=userRepository.findById(userId).get().getStatistics().getStatisticShops();
+        model.addAttribute("statisticItem",statisticItems);
+        model.addAttribute("statisticShop",statisticShops);
+        return "statistic";
     }
 /*
     @PostMapping("/lists/{id}/{ProductID}/add")   //Produkt hinzufuegen. Vlt einzelne Produkte in Auswahlliste, Controller erzeugt ProduktBundle mit Stückanzahl in Einkaufsliste?

@@ -4,8 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
-public interface ShoppingListRepository extends CrudRepository <ShoppingList, Long> {
+public interface StatisticRepository extends CrudRepository<Statistic, Long> {
     @Override
-    List<ShoppingList> findAll();
+    List<Statistic> findAll();
 }

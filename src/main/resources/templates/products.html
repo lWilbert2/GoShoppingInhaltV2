@@ -20,6 +20,21 @@
             });
         }
 
+        function addAmount(productId, amountId) {
+            const btn = document.getElementById("amount" + amountId + "/" + productId);
+            console.log(btn);
+            console.log("amount" + amountId + "/" + productId);
+            $.ajax({
+                type: "GET",
+                url: document.URL + '/' + productId + '/addAmountFromProduct/' + amountId,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    btn.style.backgroundColor = "khaki";
+                }
+            });
+        }
+
         function CreateNewCostumSpecifiation(productId) {
             $.ajax({
                 type: "GET",
@@ -159,9 +174,16 @@
                         th:text="${v.name}"></button>
             </div>
             <div style="float:left" th:each="v:${u.amounts}">
-                <button type="button" class="btn btn-light" th:id="'amounts'+${v.id}"
-                        th:onclick="addSpeci([[${u.id}]],[[${v.id}]])"
-                        th:text="${v.name}"></button>
+                <div th:each="i:${listitem}">
+                    <div th:if="${i}==${u}">
+                        <div th:if="${i.amount}==${v}">
+                            <button type="button" class="btn btn-light" th:id="'amount'+${v.id}+'/'+${u.id}"
+                                    style="background-color:khaki"
+                                    th:onclick="addAmount([[${u.id}]],[[${v.id}]])"
+                                    th:text="${v.name}"></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

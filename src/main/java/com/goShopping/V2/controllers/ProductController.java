@@ -19,12 +19,10 @@ public class ProductController {
     private ProductRepository productRepo;
     @Autowired
     private CategoryRepository categoryRepository;
-
     @Autowired
     private AmountRepository amountRepository;
     //@Autowired
     //private FilterRepository allergenRepository;
-
     @Autowired
     private SpecificationRepository specificationRepository;
 

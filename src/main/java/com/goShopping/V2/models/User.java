@@ -14,6 +14,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List <ShoppingList> shoppingLists;
 
+    @OneToOne
+    private Statistic statistics;
+
     public User(String name)
     {
         this.name=name;
@@ -24,4 +27,12 @@ public class User {
     public List<ShoppingList> getShoppingLists() {return shoppingLists;}
     public void setShoppingLists(List<ShoppingList> shoppingLists) {this.shoppingLists = shoppingLists;}
     public void addShoppingList(ShoppingList shoppingList){shoppingLists.add(shoppingList);}
+
+    public Statistic getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(Statistic statistics) {
+        this.statistics = statistics;
+    }
 }
