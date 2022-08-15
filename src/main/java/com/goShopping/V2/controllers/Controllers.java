@@ -1,7 +1,10 @@
 package com.goShopping.V2.controllers;
 
 import com.goShopping.V2.models.*;
+import com.goShopping.V2.services.SearchService;
+import com.goShopping.V2.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -90,7 +93,6 @@ public class Controllers {
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingListRepo.findById(id).get());
         model.addAttribute("product", productRepo.findAllOrderByNameAsc());
-        model.addAttribute("listitem", shoppingListRepo.findById(id).get().getList());
         return "products";
     }
 
@@ -98,13 +100,15 @@ public class Controllers {
     //Anzeige aller Produkte einer bestimmten Kategorie, Noch nicht alphabetisch sortiert
     //TO DO: Alphabetisch Sortieren
     public String getProductsOfCategory(@PathVariable("userId") long userId, @PathVariable("listId") long listId, @PathVariable("id") long id, Model model) {
+        SearchService searchService=new SearchService();
         User user = userRepository.findById(userId).get();
         Category category = categoryRepository.findById(id).get();
         List<ShoppingList> lists = user.getShoppingLists();
+        List <Product> products=searchService.sortList(category.getProductsOfCategory());
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
         model.addAttribute("category", category);
-        model.addAttribute("product", category.getProductsOfCategory());
+        model.addAttribute("product", products);
         model.addAttribute("specifications", specificationRepository.findAll());
         return "category";
 
@@ -132,14 +136,28 @@ public class Controllers {
         return "category";
 
     }
+    @GetMapping("/lists/{listId}/search")
+    public String Search(@RequestParam String search, Model model, @PathVariable("userId") long userId, @PathVariable("listId") long listId)
+    {
+        SearchService searchService=new SearchService();
+       // Product product=searchService.binarySearchObject(productRepo.findAllOrderByNameAsc(), search);
+        ArrayList <Product> products=searchService.subStringSubList(productRepo.findAllOrderByNameAsc(), search);
+        model.addAttribute("product",products);
+        model.addAttribute("user", userRepository.findById(userId).get());
+        model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
+        return "products";
+    }
 
-    @GetMapping("statistic")
+
+    @GetMapping("/statistic")
     public String getStatistics(Model model, @PathVariable("userId") long userId)
     {
-        List <StatisticItem> statisticItems= userRepository.findById(userId).get().getStatistics().getStatisticItemList();
-        List <StatisticShop> statisticShops=userRepository.findById(userId).get().getStatistics().getStatisticShops();
+        StatisticService t5s=new StatisticService();
+        StatisticItem [] statisticItems= t5s.getTop5(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
+        //List <StatisticShop> statisticShops=userRepository.findById(userId).get().getStatistics().getStatisticShops();
         model.addAttribute("statisticItem",statisticItems);
-        model.addAttribute("statisticShop",statisticShops);
+        model.addAttribute("user",userRepository.findById(userId).get());
+        //model.addAttribute("statisticShop",statisticShops);
         return "statistic";
     }
 /*

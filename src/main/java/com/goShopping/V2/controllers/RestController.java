@@ -1,10 +1,13 @@
 package com.goShopping.V2.controllers;
 
 import com.goShopping.V2.models.*;
+import com.goShopping.V2.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Calendar.MONTH;
@@ -26,6 +29,19 @@ public class RestController {
     @Autowired
     UserRepository userRepository;
 
+    @GetMapping("users/{userId}/statistic/top5")
+    public StatisticItem [] getTop5(Model model, @PathVariable("userId") long userId)
+    {
+        StatisticService t5s=new StatisticService();
+        StatisticItem [] statisticItems= t5s.getTop5(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
+        return statisticItems;
+    }
+    @GetMapping("users/{userId}/statistic/categories")
+    public HashMap getCategories(Model model, @PathVariable("userId") long userId)
+    {
+        StatisticService statisticService=new StatisticService();
+        return statisticService.categories(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
+    }
     @GetMapping("shops")  //Gibt Liste aller shops zurück;
     public List <Shop> getShops() {
         return shopRepository.findAll();

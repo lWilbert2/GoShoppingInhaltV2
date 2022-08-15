@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
     @Override
-    List<Product> findAll();
+    ArrayList<Product> findAll();
 
     @Query("FROM Product ORDER BY name ASC")
-    List<Product> findAllOrderByNameAsc();
+    ArrayList<Product> findAllOrderByNameAsc();
 }

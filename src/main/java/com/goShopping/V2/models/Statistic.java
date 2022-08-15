@@ -12,10 +12,10 @@ public class Statistic {
     private User user;
     @OneToMany(mappedBy = "statistic", cascade = CascadeType.ALL)
     List<StatisticItem> statisticItems;
-    @OneToMany(mappedBy = "statistic", cascade = CascadeType.ALL)
-    List<StatisticShop> statisticShops;
-    public List<StatisticShop> getStatisticShops() {return statisticShops;}
-    public void setStatisticShops(List<StatisticShop> statisticShops) {this.statisticShops = statisticShops;}
+    /*@OneToMany(mappedBy = "statistic", cascade = CascadeType.ALL)
+    List<StatisticShop> statisticShops;*/
+  //  public List<StatisticShop> getStatisticShops() {return statisticShops;}
+    //public void setStatisticShops(List<StatisticShop> statisticShops) {this.statisticShops = statisticShops;}
     public User getUser() {return user;}
     public void setUser(User user) {
         this.user = user;
