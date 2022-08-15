@@ -8,42 +8,49 @@
     <script th:inline="javaScript">
         /*<![CDATA[*/
         var userId = [[${user.id}]];
-        var listId= [[${shoppinglist.id}]]
-        /*]]>*/
+        var listId = [[${shoppinglist.id}]]
 
+        /*]]>*/
         function addSpeci(productId, specificationId) {
-            console.log(specificationId);
-            $.ajax({
-                type: "GET",
-                url: document.URL + '/' + productId + '/addSpeciFromProduct/' + specificationId,
-                dataType: 'json',
-                success: function (res) {
-                    console.log(res);
-                    console.log(productId);
-                    document.getElementById("specification" + specificationId).style.color = "khaki";
-                }
-            });
+            var quantity;
+            fetch('/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addSpeciFromProduct/' + specificationId)
+                .then(response => response.json())
+                .then(function (data) {
+                    quantity = data.quantity;
+                    window.location.reload();
+                    var btn = document.getElementById('specification' + specificationId+ '/' +productId);
+                    document.getElementById(productId).innerHTML = quantity;
+                    btn.style.backgroundColor = "khaki";
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
 
         function addAmount(productId, amountId) {
-            const btn = document.getElementById("amount" + amountId + "/" + productId);
-            console.log(btn);
-            console.log("amount" + amountId + "/" + productId);
+            var quantity;
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + productId + '/addAmountFromProduct/' + amountId,
+                url: '/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addAmountFromProduct/' + amountId,
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
+                    quantity = res.quantity;
+                    var btn = document.getElementById('amount' + amountId+ '/' +productId);
+                    window.location.reload();
+                    document.getElementById(productId).innerHTML = quantity;
                     btn.style.backgroundColor = "khaki";
+
                 }
+            });
+            $(document).ajaxStop(function () {
+
             });
         }
 
         function CreateNewCostumSpecifiation(productId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + productId + '/addCostumSpecification/' + document.getElementById('costumSpecification' + productId).value,
+                url: '/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addCostumSpecification/' + document.getElementById('costumSpecification' + productId).value,
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -73,9 +80,42 @@
                 success: function (res) {
                     console.log(res);
                     var quantity = res;
+                    if (quantity == 0) {
+                        window.location.reload();
+                    }
                     document.getElementById(productId).innerHTML = quantity;
                 }
             });
+        }
+
+        function getItem(productId, speciId, type) {
+            var item;
+            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/getItem')
+                .then(response => response.json())
+                .then(function (data) {
+                    item = data;
+                    if (item != null) {
+                        if (item.product.id == productId) {
+                            if (type == 1 && item.specification != null) {
+                                if (item.specification.id == speciId) {
+                                    var btn = document.getElementById('specification' + speciId +'/' +productId);
+                                    btn.style.backgroundColor = "khaki";
+                                    console.log('itemSpecification' + item.specification.name);
+                                }
+                            }
+                            if (type == 2 && item.amount != null) {
+                                if (item.amount.id == speciId) {
+                                    var btn = document.getElementById('amount' + speciId +'/' +productId);
+                                    btn.style.backgroundColor = "khaki";
+                                    console.log('itemAmount' + item.amount.name + item.product.name);
+                                }
+                            }
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     </script>
 </head>
@@ -140,16 +180,17 @@
         </div> &nbsp;&nbsp;&nbsp;&nbsp;
         <div class="col-xs">
             <div class="input-group rounded">
-                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/search'}" method="get" >
-                <input type="text" id="search"  name="search" class="form-control rounded" placeholder="Search" th:value="${search}" autocomplete="off"/>
-                <button type="submit" class="btn btn-dark"> </button>
+                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/search'}" method="get">
+                    <input type="text" id="search" name="search" class="form-control rounded" placeholder="Search"
+                           th:value="${search}" autocomplete="off"/>
+                    <button type="submit" class="btn btn-dark"></button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <div class="container">Alles</div>
-<div class="container" th:each="u: ${product}">
+<div class="container" th:each="u: ${product}" th:id="'product'+${u.id}">
     <p>
     <div class="card mb-3">
         <div class="card-body">
@@ -164,7 +205,7 @@
                             /*<![CDATA[*/
                             var productId = [[${u.id}]];
                             /*]]>*/
-                            fetch('/users/'+userId+'/lists/'+listId+ '/products/' + productId + '/getQuantity')
+                            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/getQuantity')
                                 .then(response => response.json())
                                 .then(function (data) {
                                     var quantity = data;
@@ -182,21 +223,32 @@
             </p>
             <p class="card-text">
             <div style="float:left" th:each="v:${u.specifications}">
-                <button type="button" class="btn btn-light" th:id="'specification'+${v.id}"
+                <button type="button" class="btn btn-light" th:id="'specification'+${v.id}+'/'+${u.id}"
                         th:onclick="addSpeci([[${u.id}]],[[${v.id}]])"
                         th:text="${v.name}"></button>
+                <script th:inline="javascript">
+                    (function () {
+                        /*<![CDATA[*/
+                        var productId = [[${u.id}]];
+                        var productSpecificationId = [[${v.id}]];
+                        /*]]>*/
+                        getItem(productId, productSpecificationId, 1);
+                    }());
+                </script>
             </div>
             <div style="float:left" th:each="v:${u.amounts}">
-                <div th:each="i:${listitem}">
-                    <div th:if="${i}==${u}">
-                        <div th:if="${i.amount}==${v}">
-                            <button type="button" class="btn btn-light" th:id="'amount'+${v.id}+'/'+${u.id}"
-                                    style="background-color:khaki"
-                                    th:onclick="addAmount([[${u.id}]],[[${v.id}]])"
-                                    th:text="${v.name}"></button>
-                        </div>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-light" th:id="'amount'+${v.id}+'/'+${u.id}"
+                        th:onclick="addAmount([[${u.id}]],[[${v.id}]])"
+                        th:text="${v.name}"></button>
+                <script th:inline="javascript">
+                    (function () {
+                        /*<![CDATA[*/
+                        var productId = [[${u.id}]];
+                        var productAmountId = [[${v.id}]];
+                        /*]]>*/
+                        getItem(productId, productAmountId, 2);
+                    }());
+                </script>
             </div>
         </div>
     </div>
