@@ -13,11 +13,8 @@
                 url: document.URL + "/addProduct/" + productId,
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
+                    window.location.reload();
                 }
-            });
-            $(document).ajaxStop(function () {
-                window.location.reload();
             });
         }
         function deleteProduct(productId) {
@@ -65,7 +62,7 @@
             console.log(itemId);
             $.ajax({
                 type: "GET",
-                url: document.URL + '/'+itemId +'/'+ quantity + '/buyItem',
+                url: document.URL + '/' + itemId + '/' + quantity + '/buyItem',
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -90,10 +87,24 @@
                 window.location.reload();
             });
         }
-        function removeSpecification(itemId, specificationId) {
+        function removeSpecification(itemId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/removeSpecification/' + specificationId,
+                url: document.URL + '/' + itemId + '/removeSpecification',
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    console.log(itemId);
+                }
+            });
+            $(document).ajaxStop(function () {
+                window.location.reload();
+            });
+        }
+        function removeCostum(itemId) {
+            $.ajax({
+                type: "GET",
+                url: document.URL + '/' + itemId + '/removeCostum',
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -118,20 +129,19 @@
                 window.location.reload();
             });
         }
-        function removeAmount(itemId, amountId) {
+        function removeAmount(itemId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/removeAmount/' + amountId,
+                url: document.URL + '/' + itemId + '/removeAmount',
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
-                    console.log(itemId);
                 }
             });
             $(document).ajaxStop(function () {
                 window.location.reload();
             });
         }
+
     </script>
 </head>
 <body>
@@ -204,7 +214,7 @@
                             <div th:if="${u.id}==${v.specification.id}">
                                 <div style="float:left">
                                     <button type="button" class="btn btn-light" style="background-color: khaki"
-                                            th:onclick="removeSpecification([[${v.id}]],[[${u.id}]])"
+                                            th:onclick="removeSpecification([[${v.id}]])"
                                             th:text="${u.name}"></button>
                                 </div>
                             </div>
@@ -225,7 +235,7 @@
                             <div th:if="${u.id}==${v.amount.id}">
                                 <div style="float:left">
                                     <button type="button" class="btn btn-light" style="background-color: khaki"
-                                            th:onclick="removeAmount([[${v.id}]],[[${u.id}]])"
+                                            th:onclick="removeAmount([[${v.id}]])"
                                             th:text="${u.name}"></button>
                                 </div>
                             </div>
@@ -240,6 +250,19 @@
                                     th:onclick="addAmount([[${v.id}]],[[${u.id}]])"
                                     th:text="${u.name}"></button>
                         </div>
+                    </div>
+                    <div th:if="${v.costum}" !="null">
+                        <button type="button" class="btn btn-light"
+                                style="background: khaki"
+                                th:onclick="removeCostum([[${v.id}]])"
+                                th:text="${v.costum}"></button>
+                    </div>
+                    <div class="input-group rounded" style="float:right">
+                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCostum'}" method="get">
+                            <input type="text" id="costum" name="costum" class="form-control rounded" placeholder="Costum Specification"
+                                   th:value="${costum}" autocomplete="off"/>
+                            <button type="submit" class="btn btn-light"></button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -304,6 +327,40 @@
                                     th:text="${u.name}"></button>
                         </div>
                     </div>
+                    <div style="float:left" th:each="u:${v.product.amounts}">
+                        <div th:if="${v.amount}">
+                            <div th:if="${u.id}==${v.amount.id}">
+                                <div style="float:left">
+                                    <button type="button" class="btn btn-light" style="background-color: khaki"
+                                            th:onclick="removeAmount([[${v.id}]],[[${u.id}]])"
+                                            th:text="${u.name}"></button>
+                                </div>
+                            </div>
+                            <div style="float:left" th:unless="${u.id}==${v.amount.id}">
+                                <button type="button" class="btn btn-light"
+                                        th:onclick="addAmount([[${v.id}]],[[${u.id}]])"
+                                        th:text="${u.name}"></button>
+                            </div>
+                        </div>
+                        <div style="float:left" th:if="${v.amount==null}">
+                            <button type="button" class="btn btn-light"
+                                    th:onclick="addAmount([[${v.id}]],[[${u.id}]])"
+                                    th:text="${u.name}"></button>
+                        </div>
+                    </div>
+                    <div th:if="${v.costum}" !="null">
+                        <button type="button" class="btn btn-light"
+                                style="background: khaki"
+                                th:onclick="removeCostum([[${v.id}]])"
+                                th:text="${v.costum}"></button>
+                    </div>
+                    <div class="input-group rounded" style="float:right">
+                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCostum'}" method="get">
+                            <input type="text" id="costum" name="costum" class="form-control rounded" placeholder="Costum Specification"
+                                   th:value="${costum}" autocomplete="off"/>
+                            <button type="submit" class="btn btn-light"></button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -366,6 +423,40 @@
                                     th:onclick="addSpecification([[${v.id}]],[[${u.id}]])"
                                     th:text="${u.name}"></button>
                         </div>
+                    </div>
+                    <div style="float:left" th:each="u:${v.product.amounts}">
+                        <div th:if="${v.amount}">
+                            <div th:if="${u.id}==${v.amount.id}">
+                                <div style="float:left">
+                                    <button type="button" class="btn btn-light" style="background-color: khaki"
+                                            th:onclick="removeAmount([[${v.id}]],[[${u.id}]])"
+                                            th:text="${u.name}"></button>
+                                </div>
+                            </div>
+                            <div style="float:left" th:unless="${u.id}==${v.amount.id}">
+                                <button type="button" class="btn btn-light"
+                                        th:onclick="addAmount([[${v.id}]],[[${u.id}]])"
+                                        th:text="${u.name}"></button>
+                            </div>
+                        </div>
+                        <div style="float:left" th:if="${v.amount==null}">
+                            <button type="button" class="btn btn-light"
+                                    th:onclick="addAmount([[${v.id}]],[[${u.id}]])"
+                                    th:text="${u.name}"></button>
+                        </div>
+                    </div>
+                    <div th:if="${v.costum}" !="null">
+                        <button type="button" class="btn btn-light"
+                                style="background: khaki"
+                                th:onclick="removeCostum([[${v.id}]])"
+                                th:text="${v.costum}"></button>
+                    </div>
+                    <div class="input-group rounded" style="float:right">
+                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCostum'}" method="get">
+                            <input type="text" id="costum" name="costum" class="form-control rounded" placeholder="Costum Specification"
+                                   th:value="${costum}" autocomplete="off"/>
+                            <button type="submit" class="btn btn-light"></button>
+                        </form>
                     </div>
                 </div>
             </div>

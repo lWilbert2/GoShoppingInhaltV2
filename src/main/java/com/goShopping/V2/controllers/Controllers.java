@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class Controllers {
     }
 
     @GetMapping("/lists/{listId}/categories/{id}/products")
-    //Anzeige aller Produkte einer bestimmten Kategorie, Noch nicht alphabetisch sortiert
+    //Anzeige aller Produkte einer bestimmten Kategorie
     //TO DO: Alphabetisch Sortieren
     public String getProductsOfCategory(@PathVariable("userId") long userId, @PathVariable("listId") long listId, @PathVariable("id") long id, Model model) {
         SearchService searchService=new SearchService();
@@ -114,6 +115,23 @@ public class Controllers {
 
     }
 
+    @GetMapping("/lists/{listId}/categories/{categoryId}/products/{productId}/costum")
+    //Fügt Costum hinzu von der ProduktListe aus
+    public String CostumSpecificationCategoryList(@RequestParam ("costum")String costum, @PathVariable("categoryId") long categoryId, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+        Product product = productRepo.findById(productId).get();
+        List<ListItem> listItems = shoppingListRepo.findById(listId).get().getList();
+        for (ListItem li : listItems) {
+            if (li.getProduct().getId() == productId) {
+                li.setCostum(costum);
+                listItemRepository.save(li);
+                return "redirect:/users/{userId}/lists/{listId}/categories/{categoryId}/products";
+            }
+        }
+        ListItem listitem=new ListItem(1,product, shoppingListRepo.findById(listId).get());
+        listitem.setCostum(costum);
+        listItemRepository.save(listitem);
+        return "redirect:/users/{userId}/lists/{listId}/categories/{categoryId}/products";
+    }
     @GetMapping("/lists/{id}/checkStores")  //Aufruf der Seite CheckStores
     public String checkStoreSite(Model model, @PathVariable("id") long id, @PathVariable("userId") long userId) {
         model.addAttribute("shoppingList", shoppingListRepo.findById(id).get());
@@ -123,7 +141,7 @@ public class Controllers {
     }
 
 
-    @GetMapping("lists/{id}/categories/seasonal/products")
+    @GetMapping("lists/{id}/categories/8/products")
     // Seasonal Service, gibt Produkte zurück, welche in einem bestimmten Monat saison haben
     //TO DO: noch nicht Alphabetisch sortiert
     public String seasonalProducts(@PathVariable("userId") long userId, Model model, @PathVariable("id") long id) {
@@ -147,7 +165,30 @@ public class Controllers {
         model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
         return "products";
     }
-
+    @GetMapping("lists/{listId}/{itemId}/addCostum")
+    public String addCostum(@RequestParam("costum") String costum, @PathVariable("itemId") long itemId, @PathVariable("listId") long listId) {
+        ListItem listitem=listItemRepository.findById(itemId).get();
+        listitem.setCostum(costum);
+        listItemRepository.save(listitem);
+        return "redirect:/users/{userId}/lists/{listId}";
+    }
+    @GetMapping("/lists/{listId}/products/{productId}/costum")
+    //Fügt Costum hinzu von der ProduktListe aus
+    public String CostumSpecification(@RequestParam ("costum")String costum, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+        Product product = productRepo.findById(productId).get();
+        List<ListItem> listItems = shoppingListRepo.findById(listId).get().getList();
+        for (ListItem li : listItems) {
+            if (li.getProduct().getId() == productId) {
+                li.setCostum(costum);
+                listItemRepository.save(li);
+                return "redirect:/users/{userId}/lists/{listId}/products";
+            }
+        }
+        ListItem listitem=new ListItem(1,product, shoppingListRepo.findById(listId).get());
+        listitem.setCostum(costum);
+        listItemRepository.save(listitem);
+        return "redirect:/users/{userId}/lists/{listId}/products";
+    }
 
     @GetMapping("/statistic")
     public String getStatistics(Model model, @PathVariable("userId") long userId)
@@ -160,31 +201,4 @@ public class Controllers {
         //model.addAttribute("statisticShop",statisticShops);
         return "statistic";
     }
-/*
-    @PostMapping("/lists/{id}/{ProductID}/add")   //Produkt hinzufuegen. Vlt einzelne Produkte in Auswahlliste, Controller erzeugt ProduktBundle mit Stückanzahl in Einkaufsliste?
-    public String addProduct(@RequestParam("currentList")shoppinglist s, @RequestParam("product")product p, @RequestParam("number") int num)
-    {
-        s.changeNumById(p.getId(),num);
-        return "redirect: /";
-    }
-    @PostMapping("/lists/{id}/{ProductID}/delete")
-    public String deleteProduct(@RequestParam("current List")shoppinglist s, @RequestParam("product")product p)
-    {
-        s.deleteProduct(p);
-        return "deleted";
-    }
-
-     @PostMapping("/lists/{id}/{ProductID}/changenum")
-    public String changeNum(@RequestParam("current List")shoppinglist s, @RequestParam("product")product p, @RequestParam("number") int num)   //Anzahl des Produkts in Liste ändern
-    {
-      p.setCount(num);
-        if(num==0)
-        {
-            s.deleteProduct(p);
-        }
-        return "NumChanged";
-    }
-
-     */
-
 }

@@ -33,8 +33,8 @@ public class RestController {
     public StatisticItem [] getTop5(Model model, @PathVariable("userId") long userId)
     {
         StatisticService t5s=new StatisticService();
-        StatisticItem [] statisticItems= t5s.getTop5(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
-        return statisticItems;
+        List <StatisticItem> statisticItems=userRepository.findById(userId).get().getStatistics().getStatisticItemList();
+        return t5s.getTop5(statisticItems);
     }
     @GetMapping("users/{userId}/statistic/categories")
     public HashMap getCategories(Model model, @PathVariable("userId") long userId)
@@ -116,19 +116,6 @@ public class RestController {
     {
 
     }
-
-   /* @GetMapping("/filter/addFilter/{name}")
-    public void addAllergen(@PathVariable("name") String name)
-    {
-        Filter filter= new Filter(name);
-        filterRepository.save(filter);
-    }*/
-    /*@GetMapping("/filter/{id}")
-    public List<Product> getProductsWithFilter(@PathVariable("id") long id)
-    {
-        return filterRepository.findById(id).get().getProductsWithFilter();
-    }*/
-
     @GetMapping("AddUsers")
     public void AddUsers()
     {
@@ -137,25 +124,6 @@ public class RestController {
         userRepository.save(new User("Klaus Kleber"));
         userRepository.save(new User("Eva Berber"));
     }
-    /*@GetMapping("{userId}/settings/isFilter")
-    public void isFilter(@PathVariable("userId") long userId)
-    {
-        User user=userRepository.findById(userId).get();
-        Settings settings=user.getSettings();
-        settings.setIsFilter(!settings.getIsFilter());
-        user.setSettings(settings);
-        userRepository.save(user);
-    }*/
-   /* @GetMapping("{userId}/settings/setFilter/{filterId}")
-    public void filterFor(@PathVariable("userId") long userId, @PathVariable("filterId") long filterId)
-    {
-        User user=userRepository.findById(userId).get();
-        Settings settings=user.getSettings();
-        settings.addFilter(filterRepository.findById(filterId).get());
-        user.setSettings(settings);
-        userRepository.save(user);
-    }*/
-
     @GetMapping("DeleteUser")
     public void DeleteUser()
     {

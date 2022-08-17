@@ -1,6 +1,7 @@
 package com.goShopping.V2.services;
 
 import com.goShopping.V2.models.Category;
+import com.goShopping.V2.models.Product;
 import com.goShopping.V2.models.StatisticItem;
 
 import java.util.HashMap;
@@ -12,11 +13,16 @@ public class StatisticService {
         StatisticItem unsorted[]=statisticItems.toArray(new StatisticItem[0]);
         quickSort(unsorted, 0, unsorted.length - 1);
         StatisticItem top5 []= new StatisticItem [5];
-        top5[0]=unsorted[0];
-        top5[1]=unsorted[1];
-        top5[2]=unsorted[2];
-        top5[3]=unsorted[3];
-        top5[4]=unsorted[4];
+        for(int i=0; i<5; i++)
+        {
+            if(i<unsorted.length) {
+                top5[i]=unsorted[i];
+            }
+            else {
+                top5[i]=new StatisticItem(new Product("not defined",""),0);
+            }
+
+        }
         return top5;
 
     }

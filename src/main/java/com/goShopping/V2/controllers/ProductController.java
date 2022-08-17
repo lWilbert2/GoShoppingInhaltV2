@@ -77,42 +77,18 @@ public class ProductController {
     }
     @GetMapping("/{productId}/addAmount/{amountId}")
     @ResponseBody
-    public void addSpecification(@PathVariable("productId") long productId, @PathVariable("amountId") long amountId)
+    public void addAmount(@PathVariable("productId") long productId, @PathVariable("amountId") long amountId)
     {
         Product product=productRepo.findById(productId).get();
         product.addAmount(amountRepository.findById(amountId).get());
         productRepo.save(product);
     }
-    @GetMapping("/addSpecification")
-    @ResponseBody
-    public void addSpecification()
+    @GetMapping("/{productId}/addSpecification/{specificationId}")
+    public void addSpecification(@PathVariable("productId") long productId, @PathVariable("specificationId") long specificationId)
     {
-        Product product1=productRepo.findById(28L).get();
-        product1.addSpecification(specificationRepository.findById(6L).get());
-        product1.addSpecification(specificationRepository.findById(7L).get());
-        product1.addSpecification(specificationRepository.findById(8L).get());
-        productRepo.save(product1);
-        Product product2=productRepo.findById(34L).get();
-        product2.addSpecification(specificationRepository.findById(6L).get());
-        product2.addSpecification(specificationRepository.findById(7L).get());
-        product2.addSpecification(specificationRepository.findById(8L).get());
-        productRepo.save(product2);
-        Product product3=productRepo.findById(7L).get();
-        product3.addSpecification(specificationRepository.findById(12L).get());
-        productRepo.save(product3);
-        Product product4=productRepo.findById(8L).get();
-        product4.addSpecification(specificationRepository.findById(12L).get());
-        productRepo.save(product4);
-        Product product5=productRepo.findById(9L).get();
-        product5.addSpecification(specificationRepository.findById(12L).get());
-        productRepo.save(product5);
-        Product product6=productRepo.findById(10L).get();
-        product6.addSpecification(specificationRepository.findById(12L).get());
-        productRepo.save(product6);
-        Product product7=productRepo.findById(11L).get();
-        product7.addSpecification(specificationRepository.findById(12L).get());
-        productRepo.save(product7);
-
+        Product product=productRepo.findById(productId).get();
+        product.addSpecification(specificationRepository.findById(specificationId).get());
+        productRepo.save(product);
     }
 
      /*@GetMapping("/{id}/filter")

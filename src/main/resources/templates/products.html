@@ -11,14 +11,14 @@
         var listId = [[${shoppinglist.id}]]
 
         /*]]>*/
-        function addSpeci(productId, specificationId) {
+        function changeSpecification(productId, specificationId) {
             var quantity;
-            fetch('/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addSpeciFromProduct/' + specificationId)
+            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/addSpeciFromProduct/' + specificationId)
                 .then(response => response.json())
                 .then(function (data) {
                     quantity = data.quantity;
                     window.location.reload();
-                    var btn = document.getElementById('specification' + specificationId+ '/' +productId);
+                    var btn = document.getElementById('specification' + specificationId + '/' + productId);
                     document.getElementById(productId).innerHTML = quantity;
                     btn.style.backgroundColor = "khaki";
                 })
@@ -27,19 +27,18 @@
                 });
         }
 
-        function addAmount(productId, amountId) {
+        function changeAmount(productId, amountId) {
             var quantity;
             $.ajax({
                 type: "GET",
-                url: '/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addAmountFromProduct/' + amountId,
+                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/addAmountFromProduct/' + amountId,
                 dataType: 'json',
                 success: function (res) {
                     quantity = res.quantity;
-                    var btn = document.getElementById('amount' + amountId+ '/' +productId);
+                    var btn = document.getElementById('amount' + amountId + '/' + productId);
                     window.location.reload();
                     document.getElementById(productId).innerHTML = quantity;
                     btn.style.backgroundColor = "khaki";
-
                 }
             });
             $(document).ajaxStop(function () {
@@ -47,16 +46,15 @@
             });
         }
 
-        function CreateNewCostumSpecifiation(productId) {
+        function removeCostum(productId) {
             $.ajax({
                 type: "GET",
-                url: '/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addCostumSpecification/' + document.getElementById('costumSpecification' + productId).value,
+                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/removeCostum',
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
-                    console.log(productId);
                 }
             });
+            window.location.reload();
         }
 
         function addP(productId) {
@@ -65,7 +63,6 @@
                 url: "addProduct/" + productId,
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
                     var quantity = res;
                     document.getElementById(productId).innerHTML = quantity;
                 }
@@ -98,17 +95,20 @@
                         if (item.product.id == productId) {
                             if (type == 1 && item.specification != null) {
                                 if (item.specification.id == speciId) {
-                                    var btn = document.getElementById('specification' + speciId +'/' +productId);
+                                    var btn = document.getElementById('specification' + speciId + '/' + productId);
                                     btn.style.backgroundColor = "khaki";
-                                    console.log('itemSpecification' + item.specification.name);
                                 }
                             }
                             if (type == 2 && item.amount != null) {
                                 if (item.amount.id == speciId) {
-                                    var btn = document.getElementById('amount' + speciId +'/' +productId);
+                                    var btn = document.getElementById('amount' + speciId + '/' + productId);
                                     btn.style.backgroundColor = "khaki";
-                                    console.log('itemAmount' + item.amount.name + item.product.name);
                                 }
+                            }
+                            if (type == 3 && item.costum != null) {
+                                var btn = document.getElementById('costum' + productId);
+                                btn.style.backgroundColor = "khaki";
+                                btn.innerText = item.costum;
                             }
                         }
                     }
@@ -172,7 +172,7 @@
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/seasonal/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/8/products'}">
                 <button class="btn btn-light">
                     Saisonal
                 </button>
@@ -209,12 +209,8 @@
                                 .then(response => response.json())
                                 .then(function (data) {
                                     var quantity = data;
-                                    console.log(quantity);
                                     document.getElementById(productId).innerHTML = quantity;
                                 })
-                                .catch(function (error) {
-                                    console.log(error);
-                                });
                         })();
                     </script>
                     <button type="button" class="btn btn-light" th:onclick="deleteP([[${u.id}]])">-</button>
@@ -224,7 +220,7 @@
             <p class="card-text">
             <div style="float:left" th:each="v:${u.specifications}">
                 <button type="button" class="btn btn-light" th:id="'specification'+${v.id}+'/'+${u.id}"
-                        th:onclick="addSpeci([[${u.id}]],[[${v.id}]])"
+                        th:onclick="changeSpecification([[${u.id}]],[[${v.id}]])"
                         th:text="${v.name}"></button>
                 <script th:inline="javascript">
                     (function () {
@@ -238,7 +234,7 @@
             </div>
             <div style="float:left" th:each="v:${u.amounts}">
                 <button type="button" class="btn btn-light" th:id="'amount'+${v.id}+'/'+${u.id}"
-                        th:onclick="addAmount([[${u.id}]],[[${v.id}]])"
+                        th:onclick="changeAmount([[${u.id}]],[[${v.id}]])"
                         th:text="${v.name}"></button>
                 <script th:inline="javascript">
                     (function () {
@@ -249,6 +245,25 @@
                         getItem(productId, productAmountId, 2);
                     }());
                 </script>
+            </div>
+            <button type="button" class="btn btn-light" th:id="'costum'+${u.id}"
+                    th:onclick="removeCostum([[${u.id}]])"></button>
+            <script th:inline="javascript">
+                (function () {
+                    /*<![CDATA[*/
+                    var productId = [[${u.id}]];
+                    /*]]>*/
+                    getItem(productId, 0, 3);
+                }());
+            </script>
+            <div class="input-group rounded">
+                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/products/'+${u.id}+'/costum'}"
+                      method="get">
+                    <input type="text" id="costum" name="costum" class="form-control rounded"
+                           placeholder="Costum Specification"
+                           th:value="${costum}" autocomplete="off"/>
+                    <button type="submit" class="btn btn-light"></button>
+                </form>
             </div>
         </div>
     </div>

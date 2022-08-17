@@ -22,7 +22,6 @@
                 }
             });
         }
-
         function deleteP(productId) {
             $.ajax({
                 type: "GET",
@@ -34,6 +33,81 @@
                     document.getElementById(productId).innerHTML = quantity;
                 }
             });
+        }
+        function changeSpecification(productId, specificationId) {
+            var quantity;
+            fetch('/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addSpeciFromProduct/' + specificationId)
+                .then(response => response.json())
+                .then(function (data) {
+                    quantity = data.quantity;
+                    window.location.reload();
+                    var btn = document.getElementById('specification' + specificationId+ '/' +productId);
+                    document.getElementById(productId).innerHTML = quantity;
+                    btn.style.backgroundColor = "khaki";
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        function changeAmount(productId, amountId) {
+            var quantity;
+            $.ajax({
+                type: "GET",
+                url: '/users/' + userId + '/lists/' + listId +'/products/' + productId + '/addAmountFromProduct/' + amountId,
+                dataType: 'json',
+                success: function (res) {
+                    quantity = res.quantity;
+                    var btn = document.getElementById('amount' + amountId+ '/' +productId);
+                    window.location.reload();
+                    document.getElementById(productId).innerHTML = quantity;
+                    btn.style.backgroundColor = "khaki";
+                }
+            });
+            $(document).ajaxStop(function () {
+
+            });
+        }
+        function removeCostum(productId) {
+            $.ajax({
+                type: "GET",
+                url: '/users/' + userId + '/lists/' + listId +'/products/' + productId + '/removeCostum',
+                dataType: 'json',
+                success: function (res) {
+                }
+            });
+            window.location.reload();
+        }
+        function getItem(productId, speciId, type) {
+            var item;
+            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/getItem')
+                .then(response => response.json())
+                .then(function (data) {
+                    item = data;
+                    if (item != null) {
+                        if (item.product.id == productId) {
+                            if (type == 1 && item.specification != null) {
+                                if (item.specification.id == speciId) {
+                                    var btn = document.getElementById('specification' + speciId +'/' +productId);
+                                    btn.style.backgroundColor = "khaki";
+                                }
+                            }
+                            if (type == 2 && item.amount != null) {
+                                if (item.amount.id == speciId) {
+                                    var btn = document.getElementById('amount' + speciId +'/' +productId);
+                                    btn.style.backgroundColor = "khaki";
+                                }
+                            }
+                            if(type==3 &&item.costum!=null) {
+                                var btn=document.getElementById('costum'+productId);
+                                btn.style.backgroundColor = "khaki";
+                                btn.innerText=item.costum;
+                            }
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     </script>
 </head>
@@ -91,17 +165,26 @@
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/seasonal/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/8/products'}">
                 <button class="btn btn-light">
                     Saisonal
                 </button>
             </a>
         </div>
+        <div class="col-xs">
+            <div class="input-group rounded">
+                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/search'}" method="get">
+                    <input type="text" id="search" name="search" class="form-control rounded" placeholder="Search"
+                           th:value="${search}" autocomplete="off"/>
+                    <button type="submit" class="btn btn-dark"></button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="container" th:text="${category.name}"></div>
-<div class="container" th:each="u: ${product}">
+<div class="container" th:each="u: ${product}" th:id="'product'+${u.id}">
     <p>
     <div class="card mb-3">
         <div class="card-body">
@@ -116,11 +199,10 @@
                             /*<![CDATA[*/
                             var productId = [[${u.id}]];
                             /*]]>*/
-                            fetch('/users/'+userId+'/lists/'+listId+'/products/'+productId + '/getQuantity')
+                            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/getQuantity')
                                 .then(response => response.json())
                                 .then(function (data) {
                                     var quantity = data;
-                                    console.log(quantity);
                                     document.getElementById(productId).innerHTML = quantity;
                                 })
                                 .catch(function (error) {
@@ -134,10 +216,50 @@
             </p>
             <p class="card-text">
             <div style="float:left" th:each="v:${u.specifications}">
-                <button type="button" class="btn btn-light" th:onclick="addSpeci([[${u.id}]],[[${v.id}]])"
+                <button type="button" class="btn btn-light" th:id="'specification'+${v.id}+'/'+${u.id}"
+                        th:onclick="changeSpecification([[${u.id}]],[[${v.id}]])"
                         th:text="${v.name}"></button>
+                <script th:inline="javascript">
+                    (function () {
+                        /*<![CDATA[*/
+                        var productId = [[${u.id}]];
+                        var productSpecificationId = [[${v.id}]];
+                        /*]]>*/
+                        getItem(productId, productSpecificationId, 1);
+                    }());
+                </script>
             </div>
-            <small class="text-muted"></small></p>
+            <div style="float:left" th:each="v:${u.amounts}">
+                <button type="button" class="btn btn-light" th:id="'amount'+${v.id}+'/'+${u.id}"
+                        th:onclick="changeAmount([[${u.id}]],[[${v.id}]])"
+                        th:text="${v.name}"></button>
+                <script th:inline="javascript">
+                    (function () {
+                        /*<![CDATA[*/
+                        var productId = [[${u.id}]];
+                        var productAmountId = [[${v.id}]];
+                        /*]]>*/
+                        getItem(productId, productAmountId, 2);
+                    }());
+                </script>
+            </div>
+            <button type="button" class="btn btn-light" th:id="'costum'+${u.id}"
+                    th:onclick="removeCostum([[${u.id}]])"></button>
+            <script th:inline="javascript">
+                (function () {
+                    /*<![CDATA[*/
+                    var productId = [[${u.id}]];
+                    /*]]>*/
+                    getItem(productId, 0, 3);
+                }());
+            </script>
+            <div class="input-group rounded">
+                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/'+${category.id}+'/products/'+${u.id}+'/costum'}" method="get">
+                    <input type="text" id="costum" name="costum" class="form-control rounded" placeholder="Costum Specification"
+                           th:value="${costum}" autocomplete="off"/>
+                    <button type="submit" class="btn btn-light"></button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
