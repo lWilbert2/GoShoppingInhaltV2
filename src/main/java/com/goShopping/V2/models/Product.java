@@ -23,12 +23,10 @@ public class Product {
     @ManyToMany(mappedBy = "seasonalProducts")
     @JsonIgnore
     List <Month> seasonal;
-    @ManyToMany
+
+    @ManyToMany(mappedBy = "productsOfCategory")
     @JsonIgnore
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    List <Category> categories;
+    List <Category> categoriesOfProducts;
 
     @ManyToMany
     @JsonIgnore
@@ -62,15 +60,15 @@ public class Product {
     //public void setSpecifications(List <String> specifications) {this.specifications=specifications;}
     public void addCategory(Category category)
     {
-        categories.add(category);
+        categoriesOfProducts.add(category);
     }
     public void deleteCategory(Category category)
     {
-        categories.remove(category);
+        categoriesOfProducts.remove(category);
     }
     public List <Category> getCategories()
     {
-        return categories;
+        return categoriesOfProducts;
     }
     public List <Specification> getSpecifications()
     {

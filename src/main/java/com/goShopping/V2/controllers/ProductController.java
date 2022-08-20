@@ -59,6 +59,101 @@ public class ProductController {
         product.addCategory(category);
         return productRepo.save(product);
     }
+    @GetMapping("/addProductsToCategory")
+    @ResponseBody
+    public void addCategoriestoProduct()
+    {
+        Category category=categoryRepository.findById(4l).get();
+        category.addProduct(productRepo.findById(7L).get());
+        category.addProduct(productRepo.findById(8L).get());
+        category.addProduct(productRepo.findById(9L).get());
+        category.addProduct(productRepo.findById(11L).get());
+        category.addProduct(productRepo.findById(12L).get());
+        category.addProduct(productRepo.findById(16L).get());
+        category.addProduct(productRepo.findById(17L).get());
+        category.addProduct(productRepo.findById(18L).get());
+        category.addProduct(productRepo.findById(24L).get());
+        category.addProduct(productRepo.findById(33L).get());
+        category.addProduct(productRepo.findById(34L).get());
+        category.addProduct(productRepo.findById(39L).get());
+        category.addProduct(productRepo.findById(48L).get());
+        categoryRepository.save(category);
+
+        Category category2=categoryRepository.findById(5l).get();
+        category2.addProduct(productRepo.findById(10L).get());
+        category2.addProduct(productRepo.findById(14L).get());
+        category2.addProduct(productRepo.findById(15L).get());
+        category2.addProduct(productRepo.findById(28L).get());
+        category2.addProduct(productRepo.findById(29L).get());
+        category2.addProduct(productRepo.findById(30L).get());
+        category2.addProduct(productRepo.findById(31L).get());
+        category2.addProduct(productRepo.findById(32L).get());
+        category2.addProduct(productRepo.findById(6L).get());
+
+        categoryRepository.save(category2);
+
+        Category category3=categoryRepository.findById(6l).get();
+        category3.addProduct(productRepo.findById(3L).get());
+        category3.addProduct(productRepo.findById(4L).get());
+        category3.addProduct(productRepo.findById(13L).get());
+        category3.addProduct(productRepo.findById(19L).get());
+        category3.addProduct(productRepo.findById(25L).get());
+        category3.addProduct(productRepo.findById(26L).get());
+        category3.addProduct(productRepo.findById(27L).get());
+        category3.addProduct(productRepo.findById(35L).get());
+        category3.addProduct(productRepo.findById(36L).get());
+        category3.addProduct(productRepo.findById(37L).get());
+        categoryRepository.save(category3);
+
+        Category category4=categoryRepository.findById(7l).get();
+        category4.addProduct(productRepo.findById(1L).get());
+        category4.addProduct(productRepo.findById(21L).get());
+        category4.addProduct(productRepo.findById(23L).get());
+        category4.addProduct(productRepo.findById(47L).get());
+        category4.addProduct(productRepo.findById(49L).get());
+        category4.addProduct(productRepo.findById(55L).get());
+        category4.addProduct(productRepo.findById(50L).get());
+        categoryRepository.save(category4);
+
+        Category category5=categoryRepository.findById(8l).get();
+        category5.addProduct(productRepo.findById(1L).get());
+        category5.addProduct(productRepo.findById(5L).get());
+        category5.addProduct(productRepo.findById(20L).get());
+        category5.addProduct(productRepo.findById(46L).get());
+        categoryRepository.save(category5);
+
+        Category category6=categoryRepository.findById(9l).get();
+        category6.addProduct(productRepo.findById(56L).get());
+        category6.addProduct(productRepo.findById(57L).get());
+        category6.addProduct(productRepo.findById(58L).get());
+        categoryRepository.save(category6);
+
+        Category category7=categoryRepository.findById(1l).get();
+        category7.addProduct(productRepo.findById(13L).get());
+        category7.addProduct(productRepo.findById(42L).get());
+        category7.addProduct(productRepo.findById(45L).get());
+        category7.addProduct(productRepo.findById(55L).get());
+        categoryRepository.save(category7);
+
+        Category category8=categoryRepository.findById(2l).get();
+        category8.addProduct(productRepo.findById(43L).get());
+        category8.addProduct(productRepo.findById(40L).get());
+        category8.addProduct(productRepo.findById(54L).get());
+        categoryRepository.save(category8);
+
+        Category category9=categoryRepository.findById(3l).get();
+        category9.addProduct(productRepo.findById(22L).get());
+        category9.addProduct(productRepo.findById(51L).get());
+        category9.addProduct(productRepo.findById(52L).get());
+        category9.addProduct(productRepo.findById(53L).get());
+        category9.addProduct(productRepo.findById(44L).get());
+        category9.addProduct(productRepo.findById(37L).get());
+        category9.addProduct(productRepo.findById(59L).get());
+        categoryRepository.save(category9);
+
+
+
+    }
     @GetMapping("/{id}/deleteCategory/{categoryId}")
     @ResponseBody
     public Product deleteCategoryfromProduct(@PathVariable("id") long id,@PathVariable("categoryId") long categoryId)
@@ -90,23 +185,5 @@ public class ProductController {
         product.addSpecification(specificationRepository.findById(specificationId).get());
         productRepo.save(product);
     }
-
-     /*@GetMapping("/{id}/filter")
-    @ResponseBody
-    public List <Filter> getFilter(@PathVariable("id") long id)
-    {
-        Product product=productRepo.findById(id).get();
-        return product.getFilter();
-
-    }*/
-   /* @GetMapping("/{id}/addFilter/{filterId}")
-    @ResponseBody
-    public Product addFilterToProduct(@PathVariable("id") long id,@PathVariable("filterId") long filterId)
-    {
-        Product product=productRepo.findById(id).get();
-        Filter filter=allergenRepository.findById(filterId).get();
-        product.addFilter(filter);
-        return productRepo.save(product);
-    }*/
 
 }

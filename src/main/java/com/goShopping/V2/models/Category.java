@@ -14,8 +14,12 @@ public class Category {
     private long id;
     String name;
 
-  @ManyToMany(mappedBy = "categories")
-  List <Product> productsOfCategory;
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    List <Product> productsOfCategory;
     protected Category() {
 
     }
@@ -35,5 +39,13 @@ public class Category {
     public List <Product> getProductsOfCategory()
     {
         return productsOfCategory;
+    }
+    public void addProduct(Product product)
+    {
+        productsOfCategory.add(product);
+    }
+    public void removeProduct(Product product)
+    {
+        productsOfCategory.remove(product);
     }
 }

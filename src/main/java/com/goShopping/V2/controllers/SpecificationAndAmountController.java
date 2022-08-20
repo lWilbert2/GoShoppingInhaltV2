@@ -122,4 +122,15 @@ public class SpecificationAndAmountController {
 
         }
     }
+    @GetMapping("/{id}/products/{productId}/addCostum/{costum}")
+    public void addCostumFromProducts(@PathVariable("id") long id, @PathVariable("productId") long productId, @PathVariable("costum") String costum) {
+        List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
+        for (ListItem li : listItems) {
+            if (li.getProduct().getId() == productId) {
+                li.setCostum(costum);
+                listItemRepository.save(li);
+            }
+
+        }
+    }
 }

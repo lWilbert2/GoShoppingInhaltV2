@@ -4377,3 +4377,131 @@ DROP TABLE IF EXISTS USER_ID [90107-214]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "[*]FORCE DROP TABLE IF EXISTS SETTINGS"
 Syntax error in SQL statement "[*]FORCE DROP TABLE IF EXISTS SETTINGS"; SQL statement:
 FORCE DROP TABLE IF EXISTS SETTINGS [42000-214]
+2022-08-20 14:46:58 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:46:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select categories0_.product_id as product_2_2_0_, categories0_.category_id as category1_2_0_, category1_.id as id1_1_1_, category1_.name as name2_1_1_ from category_products categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.product_id=? [42102-214]
+2022-08-20 14:47:21 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "CATEGORY_PRODUCTS" nicht gefunden
+Table "CATEGORY_PRODUCTS" not found; SQL statement:
+select products0_.category_id as category1_2_0_, products0_.product_id as product_2_2_0_, product1_.id as id1_4_1_, product1_.herkunftsland as herkunft2_4_1_, product1_.name as name3_4_1_ from category_products products0_ inner join product product1_ on products0_.product_id=product1_.id where products0_.category_id=? [42102-214]
+2022-08-20 14:54:59 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "DROP TABLE ID [*]EXISTS CATEGORY_PRODUCTS"
+Syntax error in SQL statement "DROP TABLE ID [*]EXISTS CATEGORY_PRODUCTS"; SQL statement:
+DROP TABLE ID EXISTS CATEGORY_PRODUCTS [42000-214]

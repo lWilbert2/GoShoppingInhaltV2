@@ -38,11 +38,6 @@ public class Controllers {
     @Autowired
     private SpecificationRepository specificationRepository;
 
-    @GetMapping("/")
-    public String newDesigntest(Model model) {
-    return "NewDesign";
-    }
-
     @GetMapping("/lists")
     //Zeigt die Listen des Users nach dem Login
     public String getList(@PathVariable("userId") long userId, Model model) {
@@ -141,7 +136,7 @@ public class Controllers {
     }
 
 
-    @GetMapping("lists/{id}/categories/8/products")
+    @GetMapping("lists/{id}/categories/10/products")
     // Seasonal Service, gibt Produkte zurück, welche in einem bestimmten Monat saison haben
     //TO DO: noch nicht Alphabetisch sortiert
     public String seasonalProducts(@PathVariable("userId") long userId, Model model, @PathVariable("id") long id) {
