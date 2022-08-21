@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script scr="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
+<div class="container">
+    <div class="container">
+        <div class="row h" style="border: 1px solid #000000;">
+            <div class="col-6">
+                <canvas id="1" display="inline"  height="200">
+                </canvas>
+            </div>
+            <div class="col-6">
+                <canvas id="2" display="inline" height="200">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+    <script th:inline="javaScript">
+        /*<![CDATA[*/
+        var userId = [[${user.id}]];
+        /*]]>*/
+        const labels = ["a", "b", "c", "d", "e"]
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Top 5 Products',
+                data: [0, 0, 0, 0, 0],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 10)',
+                    'rgba(255, 159, 64, 10)',
+                    'rgba(255, 205, 86, 10)',
+                    'rgba(75, 192, 192, 10)',
+                    'rgba(54, 162, 235, 10)',
+                ],
+                borderColor: [
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                ],
+                borderWidth: 1
+            }]
+        };
+        const config1 = {
+            type: 'bar',
+            data: data,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        };
+        fetch('/users/' + userId + '/statistic/top5')
+            .then(response => response.json())
+            .then(data => dataVar1 = data)
+            .then(() => processData1());
+        var ctx1 = document.getElementById('1').getContext('2d');
+        Chart1 = new Chart(ctx1, config1);
+        var dataVar1;
+
+        function processData1() {
+            console.log(dataVar1);
+            removeData(Chart1);
+            removeData(Chart1);
+            removeData(Chart1);
+            removeData(Chart1);
+            removeData(Chart1);
+            addData(Chart1, dataVar1[0].quantity, dataVar1[0].product.name);
+            addData(Chart1, dataVar1[1].quantity, dataVar1[1].product.name);
+            addData(Chart1, dataVar1[2].quantity, dataVar1[2].product.name);
+            addData(Chart1, dataVar1[3].quantity, dataVar1[3].product.name);
+            addData(Chart1, dataVar1[4].quantity, dataVar1[4].product.name);
+            Chart1.update();
+        }
+
+        const data2 = {
+            labels: labels,
+            datasets: [{
+                label: 'Kategorien',
+                data: [0, 0, 0, 0, 0],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 10)',
+                    'rgba(255, 159, 64, 10)',
+                    'rgba(255, 205, 86, 10)',
+                    'rgba(75, 192, 192, 10)',
+                    'rgba(255, 60, 50, 10)',
+                    'rgba(200, 16, 200, 10)',
+                    'rgba(0, 200, 10, 10)',
+                    'rgba(10, 10, 255, 10)',
+                    'rgba(255, 255, 10, 10)',
+
+                ],
+                borderColor: [
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+                    'rgb(0, 0, 0)',
+
+                ],
+                borderWidth: 1
+            }]
+        };
+        const config2 = {
+            type: 'pie',
+            data: data2,
+        };
+        fetch('/users/' + userId + '/statistic/categories')
+            .then(response => response.json())
+            .then(data => dataVar2 = data)
+            .then(() => processData2());
+
+        var ctx2 = document.getElementById('2').getContext('2d');
+        Chart2 = new Chart(ctx2, config2);
+        var dataVar2;
+
+        function processData2() {
+            console.log(dataVar2);
+
+            removeData(Chart2);
+            removeData(Chart2);
+            removeData(Chart2);
+            removeData(Chart2);
+            removeData(Chart2);
+
+            addData(Chart2, dataVar2.VegetarischVeganeErsatzprodukte, "Veggie Ersatzprodukte");
+            addData(Chart2, dataVar2.Fleisch, "Fleisch");
+            addData(Chart2, dataVar2.Milchprodukte, "Milch Produkte");
+            addData(Chart2, dataVar2.Gemüse, "Gemüse");
+            addData(Chart2, dataVar2.Obst, "Obst");
+            addData(Chart2, dataVar2.Getränke, "Getränke");
+            addData(Chart2, dataVar2.Speiseschrank, "Speiseschrank");
+            addData(Chart2, dataVar2.Snacks, "Snacks");
+            addData(Chart2, dataVar2.DrogerieArtikel, "Drogerie Artikel");
+            Chart2.update();
+        }
+
+        function addData(chart, data, label) {
+            chart.data.datasets.forEach((dataset) => {
+                dataset.data.push(data);
+                labels.push(label);
+            });
+        }
+
+        function removeData(chart) {
+            chart.data.datasets.forEach((dataset) => {
+                dataset.data.pop();
+                labels.pop();
+            });
+        }
+
+        function showData(data) {
+            data.forEach(console.log())
+        }
+
+    </script>
+</body>
+</html>
