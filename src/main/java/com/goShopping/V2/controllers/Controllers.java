@@ -110,20 +110,20 @@ public class Controllers {
 
     }
 
-    @GetMapping("/lists/{listId}/categories/{categoryId}/products/{productId}/costum")
-    //Fügt Costum hinzu von der ProduktListe aus
-    public String CostumSpecificationCategoryList(@RequestParam ("costum")String costum, @PathVariable("categoryId") long categoryId, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+    @GetMapping("/lists/{listId}/categories/{categoryId}/products/{productId}/custom")
+    //Fügt custom hinzu von der ProduktListe aus
+    public String CustomSpecificationCategoryList(@RequestParam ("custom")String custom, @PathVariable("categoryId") long categoryId, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
         Product product = productRepo.findById(productId).get();
         List<ListItem> listItems = shoppingListRepo.findById(listId).get().getList();
         for (ListItem li : listItems) {
             if (li.getProduct().getId() == productId) {
-                li.setCostum(costum);
+                li.setCustom(custom);
                 listItemRepository.save(li);
                 return "redirect:/users/{userId}/lists/{listId}/categories/{categoryId}/products";
             }
         }
         ListItem listitem=new ListItem(1,product, shoppingListRepo.findById(listId).get());
-        listitem.setCostum(costum);
+        listitem.setCustom(custom);
         listItemRepository.save(listitem);
         return "redirect:/users/{userId}/lists/{listId}/categories/{categoryId}/products";
     }
@@ -135,10 +135,10 @@ public class Controllers {
         return "checkStores";
     }
     @GetMapping("/lists/{listId}/shop/{shopId}")  //Aufruf der Seite CheckStores
-    public String ShopLageplan(Model model, @PathVariable("listId") long listId, @PathVariable("userId") long userId) {
+    public String ShopLageplan(Model model, @PathVariable("listId") long listId, @PathVariable("userId") long userId, @PathVariable("shopId") long shopId) {
         model.addAttribute("shoppingList", shoppingListRepo.findById(listId).get());
         model.addAttribute("user", userRepository.findById(userId).get());
-        model.addAttribute("shop", shopRepository.findAll());
+        model.addAttribute("shop", shopRepository.findById(shopId).get());
         return "lageplan";
     }
 
@@ -167,27 +167,27 @@ public class Controllers {
         model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
         return "products";
     }
-    @GetMapping("lists/{listId}/{itemId}/addCostum")
-    public String addCostum(@RequestParam("costum") String costum, @PathVariable("itemId") long itemId, @PathVariable("listId") long listId) {
+    @GetMapping("lists/{listId}/{itemId}/addCustom")
+    public String addCustom(@RequestParam("custom") String custom, @PathVariable("itemId") long itemId, @PathVariable("listId") long listId) {
         ListItem listitem=listItemRepository.findById(itemId).get();
-        listitem.setCostum(costum);
+        listitem.setCustom(custom);
         listItemRepository.save(listitem);
         return "redirect:/users/{userId}/lists/{listId}";
     }
-    @GetMapping("/lists/{listId}/products/{productId}/costum")
-    //Fügt Costum hinzu von der ProduktListe aus
-    public String CostumSpecification(@RequestParam ("costum")String costum, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+    @GetMapping("/lists/{listId}/products/{productId}/custom")
+    //Fügt custom hinzu von der ProduktListe aus
+    public String CustomSpecification(@RequestParam ("custom")String custom, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
         Product product = productRepo.findById(productId).get();
         List<ListItem> listItems = shoppingListRepo.findById(listId).get().getList();
         for (ListItem li : listItems) {
             if (li.getProduct().getId() == productId) {
-                li.setCostum(costum);
+                li.setCustom(custom);
                 listItemRepository.save(li);
                 return "redirect:/users/{userId}/lists/{listId}/products";
             }
         }
         ListItem listitem=new ListItem(1,product, shoppingListRepo.findById(listId).get());
-        listitem.setCostum(costum);
+        listitem.setCustom(custom);
         listItemRepository.save(listitem);
         return "redirect:/users/{userId}/lists/{listId}/products";
     }

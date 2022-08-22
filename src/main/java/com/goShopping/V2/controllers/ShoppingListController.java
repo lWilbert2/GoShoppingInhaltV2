@@ -143,14 +143,14 @@ public class ShoppingListController {
 
     @GetMapping("/{id}/checkStores/shop/{shopId}")
     //CheckStores Welche(und wie viele) Produkte haben die jeweiligen Shops von der Liste
-    public List<Product> CheckShop(@PathVariable("id") long id, @PathVariable("shopId") long shopId) {
+    public List<ShopItem> CheckShop(@PathVariable("id") long id, @PathVariable("shopId") long shopId) {
         List<ListItem> OnList = shoppingListRepo.findById(id).get().getList();
-        List<Product> FoundProductsInShop = new ArrayList<Product>();
-        List<Product> AllProductsInShop = shopRepository.findById(shopId).get().getProducts();
+        List<ShopItem> FoundProductsInShop = new ArrayList<ShopItem>();
+        List<ShopItem> AllItemsInShop = shopRepository.findById(shopId).get().getInventory();
         for (ListItem listItem : OnList) {
-            for (Product product : AllProductsInShop) {
-                if (listItem.getProduct().getId() == product.getId()) {
-                    FoundProductsInShop.add(product);
+            for (ShopItem shopItem : AllItemsInShop) {
+                if (listItem.getProduct().getId() == shopItem.getProduct().getId()) {
+                    FoundProductsInShop.add(shopItem);
                     break;
                 }
             }

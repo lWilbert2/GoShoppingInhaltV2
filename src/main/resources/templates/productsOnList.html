@@ -101,10 +101,10 @@
                 window.location.reload();
             });
         }
-        function removeCostum(itemId) {
+        function removeCustom(itemId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/removeCostum',
+                url: document.URL + '/' + itemId + '/removeCustom',
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -251,16 +251,16 @@
                                     th:text="${u.name}"></button>
                         </div>
                     </div>
-                    <div th:if="${v.costum}" !="null">
+                    <div th:if="${v.custom}" !="null">
                         <button type="button" class="btn btn-light"
                                 style="background: khaki"
-                                th:onclick="removeCostum([[${v.id}]])"
-                                th:text="${v.costum}"></button>
+                                th:onclick="removeCustom([[${v.id}]])"
+                                th:text="${v.custom}"></button>
                     </div>
                     <div class="input-group rounded" style="float:right">
-                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCostum'}" method="get">
-                            <input type="text" id="costum" name="costum" class="form-control rounded" placeholder="Costum Specification"
-                                   th:value="${costum}" autocomplete="off"/>
+                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCustom'}" method="get">
+                            <input type="text" id="custom" name="custom" class="form-control rounded" placeholder="Benutzerdefiniert"
+                                   th:value="${custom}" autocomplete="off"/>
                             <button type="submit" class="btn btn-light"></button>
                         </form>
                     </div>
@@ -348,16 +348,16 @@
                                     th:text="${u.name}"></button>
                         </div>
                     </div>
-                    <div th:if="${v.costum}" !="null">
+                    <div th:if="${v.custom}" !="null">
                         <button type="button" class="btn btn-light"
                                 style="background: khaki"
-                                th:onclick="removeCostum([[${v.id}]])"
-                                th:text="${v.costum}"></button>
+                                th:onclick="removeCustom([[${v.id}]])"
+                                th:text="${v.custom}"></button>
                     </div>
                     <div class="input-group rounded" style="float:right">
-                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCostum'}" method="get">
-                            <input type="text" id="costum" name="costum" class="form-control rounded" placeholder="Costum Specification"
-                                   th:value="${costum}" autocomplete="off"/>
+                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCustom'}" method="get">
+                            <input type="text" id="custom" name="custom" class="form-control rounded" placeholder="Benutzerdefiniert"
+                                   th:value="${custom}" autocomplete="off"/>
                             <button type="submit" class="btn btn-light"></button>
                         </form>
                     </div>
@@ -445,16 +445,16 @@
                                     th:text="${u.name}"></button>
                         </div>
                     </div>
-                    <div th:if="${v.costum}" !="null">
+                    <div th:if="${v.custom}" !="null">
                         <button type="button" class="btn btn-light"
                                 style="background: khaki"
-                                th:onclick="removeCostum([[${v.id}]])"
-                                th:text="${v.costum}"></button>
+                                th:onclick="removeCustom([[${v.id}]])"
+                                th:text="${v.custom}"></button>
                     </div>
                     <div class="input-group rounded" style="float:right">
-                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCostum'}" method="get">
-                            <input type="text" id="costum" name="costum" class="form-control rounded" placeholder="Costum Specification"
-                                   th:value="${costum}" autocomplete="off"/>
+                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCustom'}" method="get">
+                            <input type="text" id="custom" name="custom" class="form-control rounded" placeholder="Benutzerdefiniert"
+                                   th:value="${custom}" autocomplete="off"/>
                             <button type="submit" class="btn btn-light"></button>
                         </form>
                     </div>

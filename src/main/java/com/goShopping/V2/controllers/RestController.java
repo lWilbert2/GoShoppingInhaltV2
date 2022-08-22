@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -24,26 +25,26 @@ public class RestController {
     MonthRepository monthRepository;
     @Autowired
     ShopRepository shopRepository;
-   // @Autowired
-   // FilterRepository filterRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ShopItemRepository shopItemRepository;
 
     @GetMapping("users/{userId}/statistic/top5")
-    public StatisticItem [] getTop5(Model model, @PathVariable("userId") long userId)
-    {
-        StatisticService t5s=new StatisticService();
-        List <StatisticItem> statisticItems=userRepository.findById(userId).get().getStatistics().getStatisticItemList();
+    public StatisticItem[] getTop5(Model model, @PathVariable("userId") long userId) {
+        StatisticService t5s = new StatisticService();
+        List<StatisticItem> statisticItems = userRepository.findById(userId).get().getStatistics().getStatisticItemList();
         return t5s.getTop5(statisticItems);
     }
+
     @GetMapping("users/{userId}/statistic/categories")
-    public HashMap getCategories(Model model, @PathVariable("userId") long userId)
-    {
-        StatisticService statisticService=new StatisticService();
+    public HashMap getCategories(Model model, @PathVariable("userId") long userId) {
+        StatisticService statisticService = new StatisticService();
         return statisticService.categories(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
     }
+
     @GetMapping("shops")  //Gibt Liste aller shops zurück;
-    public List <Shop> getShops() {
+    public List<Shop> getShops() {
         return shopRepository.findAll();
     }
 
@@ -54,32 +55,66 @@ public class RestController {
         shopRepository.save(new Shop("ALDI", "Severinsstraße 76a"));
         shopRepository.save(new Shop("LIDL", "Barbarossaplatz 3"));
     }
-    @GetMapping("shops/{id}/addProduct/{productId}")  //Startseite
+
+    @GetMapping("shops/{id}/addProduct/{productId}/{position}")  //Startseite
     @ResponseBody
-    public void AddProductToShop(@PathVariable("id") long id, @PathVariable("productId") long productId) {
-        Shop shop=shopRepository.findById(id).get();
-        for(Product product: shop.getProducts())
-        {
-            if(product.getId()==productId)
-            {
-                return;
-            }
+    public void AddProductToShop(@PathVariable("id") long id, @PathVariable("productId") long productId, @PathVariable("position") int position) {
+        Shop shop = shopRepository.findById(id).get();
+        ShopItem shopItem = new ShopItem(shop, productRepo.findById(productId).get(), position);
+        shopItemRepository.save(shopItem);
+        shop.addShopItem(shopItem);
+        shopRepository.save(shop);
+    }
+
+    @GetMapping("shops/addProducts")  //Startseite
+    @ResponseBody
+    public void AddProducts() {
+        Shop shop = shopRepository.findById(1L).get();
+        List<ShopItem> shopItems = new ArrayList<ShopItem>();
+
+        //Adding Gemüse
+        /*shopItems.add(new ShopItem(shop, productRepo.findById(7L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(8L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(9L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(11L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(12L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(16L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(17L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(18L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(24L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(33L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(34L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(39L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(48L).get(), 24));*/
+
+        //Adding Obst
+        shopItems.add(new ShopItem(shop, productRepo.findById(10L).get(), 25));
+        shopItems.add(new ShopItem(shop, productRepo.findById(14L).get(), 25));
+        shopItems.add(new ShopItem(shop, productRepo.findById(15L).get(), 25));
+        shopItems.add(new ShopItem(shop, productRepo.findById(28L).get(), 25));
+        shopItems.add(new ShopItem(shop, productRepo.findById(29L).get(), 25));
+        shopItems.add(new ShopItem(shop, productRepo.findById(30L).get(), 25));
+        shopItems.add(new ShopItem(shop, productRepo.findById(31L).get(), 26));
+        shopItems.add(new ShopItem(shop, productRepo.findById(32L).get(), 26));
+        shopItems.add(new ShopItem(shop, productRepo.findById(6L).get(), 26));
+
+        for (ShopItem shopItem : shopItems) {
+            shopItemRepository.save(shopItem);
+            shop.addShopItem(shopItem);
         }
-        shop.addProduct(productRepo.findById(productId).get());
         shopRepository.save(shop);
     }
 
     @GetMapping("/seasonal")
-    public List <Product> seasonalProducts()
-    {
-       Calendar now=Calendar.getInstance();
-       Month currentMonth= monthRepository.findById(now.get(MONTH)+1).get();
-       return currentMonth.getProducts();
+    public List<Product> seasonalProducts() {
+        Calendar now = Calendar.getInstance();
+        Month currentMonth = monthRepository.findById(now.get(MONTH) + 1).get();
+        return currentMonth.getProducts();
 
     }
+
     @GetMapping("/seasonal/addMonths")
-    public List <Month> addMonths()
-    {
+    public List<Month> addMonths() {
         monthRepository.save(new Month("January"));
         monthRepository.save(new Month("February"));
         monthRepository.save(new Month("March"));
@@ -97,9 +132,8 @@ public class RestController {
     }
 
     @GetMapping("/seasonal/addProduct")
-    public Month addSeasonalProducts()
-    {
-        Month August=monthRepository.findById(8).get();
+    public Month addSeasonalProducts() {
+        Month August = monthRepository.findById(8).get();
         August.addProduct(productRepo.findById(28L).get());
         August.addProduct(productRepo.findById(29L).get());
         August.addProduct(productRepo.findById(30L).get());
@@ -112,18 +146,18 @@ public class RestController {
         monthRepository.save(August);
         return August;
     }
-    public void findProduct()
-    {
+
+    public void findProduct() {
 
     }
+
     @GetMapping("AddUsers")
-    public void AddUsers()
-    {
+    public void AddUsers() {
         userRepository.save(new User("Melanie Becker"));
     }
+
     @GetMapping("DeleteUser")
-    public void DeleteUser()
-    {
+    public void DeleteUser() {
         userRepository.deleteAll();
     }
 }

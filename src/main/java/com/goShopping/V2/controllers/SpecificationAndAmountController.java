@@ -55,7 +55,7 @@ public class SpecificationAndAmountController {
     @GetMapping("/{id}/{itemId}/removeCostum")
     public void removeCostum(@PathVariable("itemId") long itemId) {
         ListItem listitem=listItemRepository.findById(itemId).get();
-        listitem.setCostum(null);
+        listitem.setCustom(null);
         listItemRepository.save(listitem);
     }
 
@@ -116,7 +116,7 @@ public class SpecificationAndAmountController {
         List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
         for (ListItem li : listItems) {
             if (li.getProduct().getId() == productId) {
-                li.setCostum(null);
+                li.setCustom(null);
                 listItemRepository.save(li);
             }
 
@@ -127,7 +127,7 @@ public class SpecificationAndAmountController {
         List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
         for (ListItem li : listItems) {
             if (li.getProduct().getId() == productId) {
-                li.setCostum(costum);
+                li.setCustom(costum);
                 listItemRepository.save(li);
             }
 

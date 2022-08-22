@@ -28,7 +28,7 @@ public class ListItem {
     @JoinColumn(name = "amount_id")
     Amount amount;
 
-    private String costum;
+    private String custom;
     private int quantity;
     private int priority;   //1=green, 2=yellow, 3=red
 
@@ -41,13 +41,13 @@ public class ListItem {
 
     protected ListItem() {
     }
-    public void setCostum(String costum)
+    public void setCustom(String custom)
     {
-        this.costum=costum;
+        this.custom=custom;
     }
-    public String getCostum()
+    public String getCustom()
     {
-        return costum;
+        return custom;
     }
 
     public void changePriority(int priority) {

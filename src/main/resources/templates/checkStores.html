@@ -30,10 +30,10 @@
                     for(let i=0; i<data.length; i++)
                     {
                         var ListeItems=document.createElement("div");
-                        ListeItems.innerHTML=data[i].name;
+                        ListeItems.innerHTML=data[i].product.name;
                         var parentList=document.getElementById("items"+shopId);
                         parentList.appendChild(ListeItems);
-                        console.log(data[i].name);
+                        console.log(data[i].product.name);
                     }
                 }
             });

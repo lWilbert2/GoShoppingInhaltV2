@@ -53,10 +53,10 @@
 
             });
         }
-        function removeCostum(productId) {
+        function removeCustom(productId) {
             $.ajax({
                 type: "GET",
-                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/removeCostum',
+                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/removeCustom',
                 dataType: 'json',
                 success: function (res) {
                 }
@@ -93,11 +93,11 @@
             });
         }
 
-        function addCostum(costum) {
-            console.log(costum);
+        function addCustom(custom) {
+            console.log(custom);
             $.ajax({
                 type: "GET",
-                url: "/users/" + userId + "/lists/" + listId + "/products/" + productId + "/addCostum/" + costum,
+                url: "/users/" + userId + "/lists/" + listId + "/products/" + productId + "/addCustom/" + custom,
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -125,10 +125,10 @@
                                     btn.style.backgroundColor = "khaki";
                                 }
                             }
-                            if (type == 3 && item.costum != null) {
-                                var btn = document.getElementById('costum' + productId);
+                            if (type == 3 && item.custom != null) {
+                                var btn = document.getElementById('custom' + productId);
                                 btn.style.backgroundColor = "khaki";
-                                btn.innerText = item.costum;
+                                btn.innerText = item.custom;
                             }
                         }
                     }
@@ -294,8 +294,8 @@
                     }());
                 </script>
             </div>
-            <button type="button" class="btn btn-light" th:id="'costum'+${u.id}"
-                    th:onclick="removeCostum([[${u.id}]])"></button>
+            <button type="button" class="btn btn-light" th:id="'custom'+${u.id}"
+                    th:onclick="removeCustom([[${u.id}]])"></button>
             <script th:inline="javascript">
                 (function () {
                     /*<![CDATA[*/
@@ -305,17 +305,17 @@
                 }());
             </script>
             <div class="input-group rounded">
-                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/products/'+${u.id}+'/costum'}"
+                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/products/'+${u.id}+'/custom'}"
                       method="get">
-                    <input type="text" id="costum1" name="costum" class="form-control rounded"
-                           placeholder="Costum Specification"
-                           th:value="${costum}" autocomplete="off"/>
+                    <input type="text" id="custom1" name="custom" class="form-control rounded"
+                           placeholder="Benutzerdefiniert"
+                           th:value="${custom}" autocomplete="off"/>
                     <button type="submit" class="btn btn-light"></button>
                 </form>
-               <!-- <form th:onsubmit="addCostum([[${costum}]])">
-                    <input type="text" id="costum" name="costum" class="form-control rounded"
-                           placeholder="Costum Specification"
-                           th:value="${costum}" autocomplete="off"/>
+               <!-- <form th:onsubmit="addCustom([[${costum}]])">
+                    <input type="text" id="custom" name="custom" class="form-control rounded"
+                           placeholder="Benutzerdefiniert"
+                           th:value="${custom}" autocomplete="off"/>
                 </form>-->
             </div>
         </div>
