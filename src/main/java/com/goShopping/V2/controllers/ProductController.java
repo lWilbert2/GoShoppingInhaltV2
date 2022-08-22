@@ -50,15 +50,6 @@ public class ProductController {
         return productRepo.findById(id).get();
     }
 
-    @GetMapping("/{id}/addCategory/{categoryId}")
-    @ResponseBody
-    public Product addCategorytoProduct(@PathVariable("id") long id,@PathVariable("categoryId") long categoryId)
-    {
-        Product product=productRepo.findById(id).get();
-        Category category=categoryRepository.findById(categoryId).get();
-        product.addCategory(category);
-        return productRepo.save(product);
-    }
     @GetMapping("/addProductsToCategory")
     @ResponseBody
     public void addCategoriestoProduct()

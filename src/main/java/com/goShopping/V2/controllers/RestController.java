@@ -73,7 +73,7 @@ public class RestController {
         List<ShopItem> shopItems = new ArrayList<ShopItem>();
 
         //Adding Gemüse
-        /*shopItems.add(new ShopItem(shop, productRepo.findById(7L).get(), 24));
+        shopItems.add(new ShopItem(shop, productRepo.findById(7L).get(), 24));
         shopItems.add(new ShopItem(shop, productRepo.findById(8L).get(), 24));
         shopItems.add(new ShopItem(shop, productRepo.findById(9L).get(), 24));
         shopItems.add(new ShopItem(shop, productRepo.findById(11L).get(), 24));
@@ -85,7 +85,7 @@ public class RestController {
         shopItems.add(new ShopItem(shop, productRepo.findById(33L).get(), 24));
         shopItems.add(new ShopItem(shop, productRepo.findById(34L).get(), 24));
         shopItems.add(new ShopItem(shop, productRepo.findById(39L).get(), 24));
-        shopItems.add(new ShopItem(shop, productRepo.findById(48L).get(), 24));*/
+        shopItems.add(new ShopItem(shop, productRepo.findById(48L).get(), 24));
 
         //Adding Obst
         shopItems.add(new ShopItem(shop, productRepo.findById(10L).get(), 25));
@@ -98,11 +98,44 @@ public class RestController {
         shopItems.add(new ShopItem(shop, productRepo.findById(32L).get(), 26));
         shopItems.add(new ShopItem(shop, productRepo.findById(6L).get(), 26));
 
+        //Getränke hinzufuegen (Manuell, da Unterscheidung zwischen Spirituose und normalen Getränken)
+        shopItems.add(new ShopItem(shop, productRepo.findById(61L).get(), 4));
+        shopItems.add(new ShopItem(shop, productRepo.findById(3L).get(), 16));
+        shopItems.add(new ShopItem(shop, productRepo.findById(4L).get(), 17));
+        shopItems.add(new ShopItem(shop, productRepo.findById(19L).get(), 18));
+        shopItems.add(new ShopItem(shop, productRepo.findById(27L).get(), 5));
+        shopItems.add(new ShopItem(shop, productRepo.findById(35L).get(), 5));
+        shopItems.add(new ShopItem(shop, productRepo.findById(36L).get(), 6));
+        shopItems.add(new ShopItem(shop, productRepo.findById(26L).get(), 19));
+        shopItems.add(new ShopItem(shop, productRepo.findById(61L).get(), 4));
+        shopItems.add(new ShopItem(shop, productRepo.findById(25L).get(), 19));
+        shopRepository.save(shop);
         for (ShopItem shopItem : shopItems) {
             shopItemRepository.save(shopItem);
             shop.addShopItem(shopItem);
         }
-        shopRepository.save(shop);
+        List <Product> products=categoryRepository.findById(1L).get().getProductsOfCategory();
+        for(Product product: products)
+        {
+            ShopItem shopItem=new ShopItem(shop,product,30);
+            shopItemRepository.save(shopItem);
+            shop.addShopItem(shopItem);
+        }
+        List <Product> products2=categoryRepository.findById(2L).get().getProductsOfCategory();
+        for(Product product: products2)
+        {
+            ShopItem shopItem=new ShopItem(shop,product,29);
+            shopItemRepository.save(shopItem);
+            shop.addShopItem(shopItem);
+        }
+        List <Product> products3=categoryRepository.findById(3L).get().getProductsOfCategory();
+        for(Product product: products3)
+        {
+            ShopItem shopItem=new ShopItem(shop,product,(int)(Math.random()*2+27));
+            shopItemRepository.save(shopItem);
+            shop.addShopItem(shopItem);
+        }
+
     }
 
     @GetMapping("/seasonal")
@@ -147,10 +180,15 @@ public class RestController {
         return August;
     }
 
-    public void findProduct() {
-
+    @GetMapping("category/{categoryId}/addProduct/{productId}")
+    @ResponseBody
+    public void addCategorytoProduct(@PathVariable("productId") long productId,@PathVariable("categoryId") long categoryId)
+    {
+        Product product=productRepo.findById(productId).get();
+        Category category=categoryRepository.findById(categoryId).get();
+       category.addProduct(product);
+       categoryRepository.save(category);
     }
-
     @GetMapping("AddUsers")
     public void AddUsers() {
         userRepository.save(new User("Melanie Becker"));
