@@ -134,6 +134,13 @@ public class Controllers {
         model.addAttribute("shop", shopRepository.findAll());
         return "checkStores";
     }
+    @GetMapping("/lists/{listId}/shop/{shopId}")  //Aufruf der Seite CheckStores
+    public String ShopLageplan(Model model, @PathVariable("listId") long listId, @PathVariable("userId") long userId) {
+        model.addAttribute("shoppingList", shoppingListRepo.findById(listId).get());
+        model.addAttribute("user", userRepository.findById(userId).get());
+        model.addAttribute("shop", shopRepository.findAll());
+        return "lageplan";
+    }
 
 
     @GetMapping("lists/{id}/categories/10/products")

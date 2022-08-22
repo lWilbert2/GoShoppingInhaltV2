@@ -119,10 +119,7 @@ public class RestController {
     @GetMapping("AddUsers")
     public void AddUsers()
     {
-        userRepository.save(new User("Anna Neumann"));
-        userRepository.save(new User("Samuel Neumann"));
-        userRepository.save(new User("Klaus Kleber"));
-        userRepository.save(new User("Eva Berber"));
+        userRepository.save(new User("Melanie Becker"));
     }
     @GetMapping("DeleteUser")
     public void DeleteUser()

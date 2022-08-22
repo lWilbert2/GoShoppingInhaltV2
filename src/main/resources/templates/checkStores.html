@@ -7,7 +7,10 @@
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div th:each="u:${shop}">
-<div th:text="${u.name}"></div>
+    <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/shop/'+${u.id}}">
+        <button class="btn btn-light" th:text="${u.name}">
+        </button>
+    </a>
     <script th:inline="javaScript">
         (function(){
             /*<![CDATA[*/
