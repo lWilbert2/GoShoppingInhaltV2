@@ -127,7 +127,7 @@
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/1/products'}">
                 <button class="btn btn-light">
-                    Vegan
+                    Vegane/Vegetarische Ersatzprodukte
                 </button>
             </a>
         </div>
@@ -136,7 +136,7 @@
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/2/products'}">
                 <button class="btn btn-light"
                         th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/2/products'}">
-                    Vegetarisch
+                    Fleisch
                 </button>
             </a>
         </div>
@@ -151,7 +151,7 @@
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/4/products'}">
                 <button class="btn btn-light">
-                    Gemüse
+                    Milch Produkte
                 </button>
             </a>
         </div>
@@ -159,18 +159,46 @@
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/5/products'}">
                 <button class="btn btn-light">
-                    Obst
+                    Gemüse
                 </button>
             </a>
         </div>
         <div class="col-xs">
             <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/6/products'}">
+                <button class="btn btn-light">
+                    Obst
+                </button>
+            </a>
+        </div> &nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="col-xs">
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/7/products'}">
+                <button class="btn btn-light">
+                    Getränke
+                </button>
+            </a>
+        </div> &nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="col-xs">
+            <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/8/products'}">
+                <button class="btn btn-light">
+                    Speiseschrank
+                </button>
+            </a>
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/9/products'}">
+                <button class="btn btn-light">
+                    Drogerie Artikel
+                </button>
+            </a>
+            <a style="color: inherit"
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/10/products'}">
                 <button class="btn btn-light">
                     Saisonal
                 </button>
             </a>
-        </div>
+        </div> &nbsp;&nbsp;&nbsp;&nbsp;
         <div class="col-xs">
             <div class="input-group rounded">
                 <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/search'}" method="get">
@@ -182,7 +210,6 @@
         </div>
     </div>
 </div>
-
 <div class="container" th:text="${category.name}"></div>
 <div class="container" th:each="u: ${product}" th:id="'product'+${u.id}">
     <p>
