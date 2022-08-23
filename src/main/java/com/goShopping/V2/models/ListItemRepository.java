@@ -12,6 +12,5 @@ public interface ListItemRepository extends CrudRepository<ListItem,Long> {
     List<ListItem> findAll();
     @Query("FROM ListItem ORDER BY priority DESC")
     List<ListItem> findAllOrderByPriorityDesc();
-
     ListItem findByShoppingList_IdAndProduct_Id(long list_id, long product_id);
 }

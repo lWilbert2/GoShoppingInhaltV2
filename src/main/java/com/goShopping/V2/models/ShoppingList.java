@@ -75,11 +75,4 @@ public class ShoppingList {
         }
         return -1;
     }
-
-    public void removeItem(long listItemId) {
-        for (ListItem lI : list) {
-            list.remove(lI);
-            return;
-        }
-    }
 }

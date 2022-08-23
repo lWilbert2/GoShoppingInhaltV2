@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+//Alle Operationen die Specifications, Amounts oder custom Specifications betreffen, genutzt vom Frontend
 @RestController
 @RequestMapping("users/{userId}/lists")
 public class SpecificationAndAmountController {
@@ -24,15 +24,15 @@ public class SpecificationAndAmountController {
 
 
     //Controller auf ProductsOnList
-    @GetMapping("/{id}/{itemId}/addAmount/{amountId}")
+    @GetMapping("/{listId}/items/{itemId}/amounts/{amountId}/add")
     //Fügt Menge aus der Liste selbst hinzu
-    public void addAmount(@PathVariable("id") long id, @PathVariable("itemId") long itemId, @PathVariable("amountId") long amountId) {
+    public void addAmount(@PathVariable("itemId") long itemId, @PathVariable("amountId") long amountId) {
         ListItem listItem = listItemRepository.findById(itemId).get();
         listItem.setAmount(amountRepository.findById(amountId).get());
         listItemRepository.save(listItem);
     }
 
-    @GetMapping("/{id}/{itemId}/removeAmount")
+    @GetMapping("/{listId}/items/{itemId}/amounts/remove")
     //entfernt Amount aus der Liste aus, von der Liste
     public void removeAmount(@PathVariable("itemId") long itemId) {
         ListItem listItem = listItemRepository.findById(itemId).get();
@@ -40,7 +40,7 @@ public class SpecificationAndAmountController {
         listItemRepository.save(listItem);
     }
 
-    @GetMapping("/{id}/{itemId}/removeSpecification")
+    @GetMapping("/{listId}/items/{itemId}/specifications/remove")
     //entfernt Spezifikation aus der Liste aus, von der Liste
     public void removeSpecification(@PathVariable("itemId") long itemId) {
         ListItem listItem = listItemRepository.findById(itemId).get();
@@ -48,15 +48,15 @@ public class SpecificationAndAmountController {
         listItemRepository.save(listItem);
     }
 
-    @GetMapping("/{id}/{itemId}/addSpecification/{specificationId}")
+    @GetMapping("/{listId}/items/{itemId}/specifications/{specificationId}/add")
     //Fügt Spezifikation aus der Liste selbst hinzu
-    public void addSpecification(@PathVariable("id") long id, @PathVariable("itemId") long itemId, @PathVariable("specificationId") long specificationId) {
+    public void addSpecification(@PathVariable("itemId") long itemId, @PathVariable("specificationId") long specificationId) {
         ListItem listItem = listItemRepository.findById(itemId).get();
         listItem.setSpecification(specificationRepository.findById(specificationId).get());
         listItemRepository.save(listItem);
     }
 
-    @GetMapping("/{id}/{itemId}/removeCustom")
+    @GetMapping("/{listId}/items/{itemId}/custom/remove")
     public void removeCostum(@PathVariable("itemId") long itemId) {
         ListItem listitem = listItemRepository.findById(itemId).get();
         listitem.setCustom(null);
@@ -64,8 +64,7 @@ public class SpecificationAndAmountController {
     }
 
     //Controller auf Alle Produkte
-
-    @GetMapping("/{listId}/products/{productId}/addSpeciFromProduct/{specificationId}")
+    @GetMapping("/{listId}/products/{productId}/specifications/{specificationId}/set")
     @ResponseBody
     //Fügt Spezifikation hinzu von der ProduktListe aus
     public ListItem addSpecificationfromProduct(@PathVariable("listId") long listId, @PathVariable("productId") long productId, @PathVariable("specificationId") long specificationId) {
@@ -86,7 +85,7 @@ public class SpecificationAndAmountController {
         return listItem;
     }
 
-    @GetMapping("/{listId}/products/{productId}/addAmountFromProduct/{amountId}")
+    @GetMapping("/{listId}/products/{productId}/amounts/{amountId}/set")
     //Fügt Spezifikation hinzu von der ProduktListe aus
     public ListItem addAmountFromProduct(@PathVariable("listId") long listId, @PathVariable("productId") long productId, @PathVariable("amountId") long amountId) {
         if(listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId)!=null) {
@@ -106,14 +105,14 @@ public class SpecificationAndAmountController {
         return listItem;
 }
 
-    @GetMapping("/{listId}/products/{productId}/removeCustom")
+    @GetMapping("/{listId}/products/{productId}/custom/remove")
     public void removeCustomFromProducts(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
         ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
         listItem.setCustom(null);
         listItemRepository.save(listItem);
     }
 
-    @GetMapping("/{listId}/products/{productId}/addCustom/{custom}")
+    @GetMapping("/{listId}/products/{productId}/custom/{custom}/add")
     public void addCustomFromProducts(@PathVariable("listId") long listId, @PathVariable("productId") long productId, @PathVariable("custom") String custom) {
         ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
         listItem.setCustom(custom);

@@ -1,10 +1,8 @@
 package com.goShopping.V2.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.domain.Sort;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class ListItem {
@@ -14,7 +12,6 @@ public class ListItem {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
     @ManyToOne
     @JoinColumn(name = "list_id")
     @JsonIgnore
@@ -38,89 +35,52 @@ public class ListItem {
         this.shoppingList = shoppingList;
         priority = 1;
     }
-
-    protected ListItem() {
+    protected ListItem() {}
+    public long getId() {
+        return id;
     }
-    public void setCustom(String custom)
-    {
-        this.custom=custom;
-    }
-    public String getCustom()
-    {
-        return custom;
-    }
-
     public void changePriority(int priority) {
         if (priority >= 1 && priority <= 3) {
             this.priority = priority;
         }
     }
-
-    public void changeId(long id) {
-        this.id = id;
-    }
-
     public int getPriority() {
         return priority;
-
-        /*if(priority==1) {return "green";}
-        else if(priority==2) {return "yellow";}
-        else {return "red";}*/
     }
-
-    public int getPriorityInt() {
-        return priority;
-    }
-
     public ShoppingList getShoppingList() {
         return shoppingList;
     }
-
     public int getQuantity() {
         return quantity;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setP(Product p) {
-        this.product = p;
-    }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    public void setSpecification(Specification specification) {
-        this.specification = specification;
+    public Product getProduct() {
+        return product;
     }
-
     public void setAmount(Amount amount) {
         this.amount = amount;
     }
-
     public void removeAmount() {
         this.amount = null;
     }
-
     public Amount getAmount() {
         return amount;
     }
-
+    public void setSpecification(Specification specification) {
+        this.specification = specification;
+    }
     public void removeSpecification() {
         specification = null;
     }
-
     public Specification getSpecification() {
         return specification;
     }
+    public void setCustom(String custom) {this.custom=custom;}
+    public String getCustom()
+    {
+        return custom;
+    }
+
 }

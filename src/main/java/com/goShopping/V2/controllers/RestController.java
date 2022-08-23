@@ -30,18 +30,6 @@ public class RestController {
     @Autowired
     ShopItemRepository shopItemRepository;
 
-    @GetMapping("users/{userId}/statistic/top5")
-    public StatisticItem[] getTop5(Model model, @PathVariable("userId") long userId) {
-        StatisticService t5s = new StatisticService();
-        List<StatisticItem> statisticItems = userRepository.findById(userId).get().getStatistics().getStatisticItemList();
-        return t5s.getTop5(statisticItems);
-    }
-
-    @GetMapping("users/{userId}/statistic/categories")
-    public HashMap getCategories(Model model, @PathVariable("userId") long userId) {
-        StatisticService statisticService = new StatisticService();
-        return statisticService.categories(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
-    }
 
     @GetMapping("shops")  //Gibt Liste aller shops zurück;
     public List<Shop> getShops() {

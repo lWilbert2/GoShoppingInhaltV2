@@ -8,20 +8,11 @@
     <script th:inline="javaScript">
         /*<![CDATA[*/
         var userId = [[${user.id}]];
-        var listId = [[${shoppinglist.id}]]
+        var listId = [[${shoppingList.id}]]
         /*]]>*/
-        $(window).scroll(function() {
-            sessionStorage.scrollTop = $(this).scrollTop();
-        });
-
-        $(document).ready(function() {
-            if (sessionStorage.scrollTop != "undefined") {
-                $(window).scrollTop(sessionStorage.scrollTop);
-            }
-        });
         function changeSpecification(productId, specificationId) {
             var quantity;
-            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/addSpeciFromProduct/' + specificationId)
+            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/specifications/' + specificationId +'/set')
                 .then(response => response.json())
                 .then(function (data) {
                     quantity = data.quantity;
@@ -39,7 +30,7 @@
             var quantity;
             $.ajax({
                 type: "GET",
-                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/addAmountFromProduct/' + amountId,
+                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/amounts/' + amountId +'/set',
                 dataType: 'json',
                 success: function (res) {
                     quantity = res.quantity;
@@ -49,14 +40,11 @@
                     btn.style.backgroundColor = "khaki";
                 }
             });
-            $(document).ajaxStop(function () {
-
-            });
         }
         function removeCustom(productId) {
             $.ajax({
                 type: "GET",
-                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/removeCustom',
+                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/custom/remove',
                 dataType: 'json',
                 success: function (res) {
                 }
@@ -69,7 +57,7 @@
         function addP(productId) {
             $.ajax({
                 type: "GET",
-                url: "addProduct/" + productId,
+                url: "products/" + productId+ "/add",
                 dataType: 'json',
                 success: function (res) {
                     var quantity = res;
@@ -80,7 +68,7 @@
         function deleteP(productId) {
             $.ajax({
                 type: "GET",
-                url: "deleteProduct/" + productId,
+                url: "products/" + productId+"/delete",
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -97,7 +85,7 @@
             console.log(custom);
             $.ajax({
                 type: "GET",
-                url: "/users/" + userId + "/lists/" + listId + "/products/" + productId + "/addCustom/" + custom,
+                url: "/users/" + userId + "/lists/" + listId + "/products/" + productId + "/custom/" + custom +"/add",
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -107,7 +95,7 @@
 
         function getItem(productId, speciId, type) {
             var item;
-            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/getItem')
+            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/items')
                 .then(response => response.json())
                 .then(function (data) {
                     item = data;
@@ -144,7 +132,7 @@
 <div class="container">
     <div class="row">
         <div class="col-xs">
-            <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/products'}">
+            <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/products'}">
                 <button class="btn btn-light">
                     Alles
                 </button>
@@ -152,7 +140,7 @@
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/1/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/1/products'}">
                 <button class="btn btn-light">
                     Vegane/Vegetarische Ersatzprodukte
                 </button>
@@ -160,23 +148,23 @@
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/2/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/2/products'}">
                 <button class="btn btn-light"
-                        th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/2/products'}">
+                        th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/2/products'}">
                     Fleisch
                 </button>
             </a>
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/3/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/3/products'}">
                 <button class="btn btn-light">Alkohol
                 </button>
             </a>
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/4/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/4/products'}">
                 <button class="btn btn-light">
                     Milch Produkte
                 </button>
@@ -184,7 +172,7 @@
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/5/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/5/products'}">
                 <button class="btn btn-light">
                     Gemüse
                 </button>
@@ -192,7 +180,7 @@
         </div>
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/6/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/6/products'}">
                 <button class="btn btn-light">
                     Obst
                 </button>
@@ -200,7 +188,7 @@
         </div> &nbsp;&nbsp;&nbsp;&nbsp;
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/7/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/7/products'}">
                 <button class="btn btn-light">
                     Getränke
                 </button>
@@ -208,19 +196,19 @@
         </div> &nbsp;&nbsp;&nbsp;&nbsp;
         <div class="col-xs">
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/8/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/8/products'}">
                 <button class="btn btn-light">
                     Speiseschrank
                 </button>
             </a>
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/9/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/9/products'}">
                 <button class="btn btn-light">
                     Drogerie Artikel
                 </button>
             </a>
             <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/categories/10/products'}">
+               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/10/products'}">
                 <button class="btn btn-light">
                     Saisonal
                 </button>
@@ -228,7 +216,7 @@
         </div> &nbsp;&nbsp;&nbsp;&nbsp;
         <div class="col-xs">
             <div class="input-group rounded">
-                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/search'}" method="get">
+                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/search'}" method="get">
                     <input type="text" id="search" name="search" class="form-control rounded" placeholder="Search"
                            th:value="${search}" autocomplete="off"/>
                     <button type="submit" class="btn btn-dark"></button>
@@ -253,7 +241,7 @@
                             /*<![CDATA[*/
                             var productId = [[${u.id}]];
                             /*]]>*/
-                            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/getQuantity')
+                            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/quantity')
                                 .then(response => response.json())
                                 .then(function (data) {
                                     var quantity = data;
@@ -305,7 +293,7 @@
                 }());
             </script>
             <div class="input-group rounded">
-                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/products/'+${u.id}+'/custom'}"
+                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/products/'+${u.id}+'/custom'}"
                       method="get">
                     <input type="text" id="custom1" name="custom" class="form-control rounded"
                            placeholder="Benutzerdefiniert"
@@ -321,7 +309,7 @@
         </div>
     </div>
 </div>
-<a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}}">
+<a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}}">
     <button class="btn btn-light btn-lg btn-block" align="center"> Back to ShoppingList
     </button>
 </a>

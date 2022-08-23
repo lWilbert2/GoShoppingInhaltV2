@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
-
     @Override
     ArrayList<Product> findAll();
-
     @Query("FROM Product ORDER BY name ASC")
     ArrayList<Product> findAllOrderByNameAsc();
 

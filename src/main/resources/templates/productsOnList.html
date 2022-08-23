@@ -10,7 +10,7 @@
             console.log(productId);
             $.ajax({
                 type: "GET",
-                url: document.URL + "/addProduct/" + productId,
+                url: document.URL + "/products/" + productId +"/add",
                 dataType: 'json',
                 success: function (res) {
                     window.location.reload();
@@ -20,7 +20,7 @@
         function deleteProduct(productId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + "/deleteProduct/" + productId,
+                url: document.URL + "/products/" + productId+"/delete",
                 dataType: 'json',
                 success: function (res) {
                     window.location.reload();
@@ -30,7 +30,7 @@
         function changePrio(prio, itemId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + "/changePriority/" + itemId + '/' + prio,
+                url: document.URL + "/items/" + itemId + '/priority/' + prio,
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -44,7 +44,7 @@
             console.log(itemId);
             $.ajax({
                 type: "GET",
-                url: document.URL + '/deleteItem/' + itemId,
+                url: document.URL + '/items/' + itemId +"/delete",
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -59,7 +59,7 @@
             console.log(itemId);
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/' + quantity + '/buyItem',
+                url: document.URL + '/items/' + itemId + '/buy/' + quantity,
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -73,7 +73,7 @@
         function addSpecification(itemId, specificationId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/addSpecification/' + specificationId,
+                url: document.URL + '/items/' + itemId + '/specifications/' + specificationId + '/add',
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -87,7 +87,7 @@
         function removeSpecification(itemId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/removeSpecification',
+                url: document.URL + '/items/' + itemId + '/specifications/remove',
                 dataType: 'json',
                 success: function (res) {
                 }
@@ -99,7 +99,7 @@
         function removeCustom(itemId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/removeCustom',
+                url: document.URL + '/items/' + itemId + '/custom/remove',
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -113,7 +113,7 @@
         function addAmount(itemId, amountId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/addAmount/' + amountId,
+                url: document.URL + '/items/' + itemId + '/amounts/' + amountId+ '/add',
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -127,7 +127,7 @@
         function removeAmount(itemId) {
             $.ajax({
                 type: "GET",
-                url: document.URL + '/' + itemId + '/removeAmount',
+                url: document.URL + '/items/' + itemId + '/amounts/remove',
                 dataType: 'json',
                 success: function (res) {
                 }
@@ -149,11 +149,11 @@
         <button class="btn btn-light btn-lg btn-block" align="center">Back to ShoppingLists
         </button>
     </a>
-    <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/products'}">
+    <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/products'}">
         <button class="btn btn-light btn-lg btn-block" align="center">Add Product
         </button>
     </a>
-    <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppinglist.id}+'/checkStores'}">
+    <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/shops/check'}">
         <button class="btn btn-light btn-lg btn-block" align="center">Check Stores
         </button>
     </a>
@@ -163,7 +163,7 @@
     </a>
 </div>
 <div class="container">
-    <h2 th:text="${shoppinglist.name}"></h2>
+    <h2 th:text="${shoppingList.name}"></h2>
     <div th:each="v: ${listItems}">
         <div th:if="${v.priority}==1">
             <div class="card border-success mb-3">
@@ -253,7 +253,7 @@
                                 th:text="${v.custom}"></button>
                     </div>
                     <div class="input-group rounded" style="float:right">
-                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCustom'}" method="get">
+                        <form th:action="@{${shoppingList.id}+'/items/'+ ${v.id}+'/custom'}" method="get">
                             <input type="text" id="custom" name="custom" class="form-control rounded" placeholder="Benutzerdefiniert"
                                    th:value="${custom}" autocomplete="off"/>
                             <button type="submit" class="btn btn-light"></button>
@@ -350,7 +350,7 @@
                                 th:text="${v.custom}"></button>
                     </div>
                     <div class="input-group rounded" style="float:right">
-                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCustom'}" method="get">
+                        <form th:action="@{${shoppingList.id}+'/items/'+ ${v.id}+'/custom'}" method="get">
                             <input type="text" id="custom" name="custom" class="form-control rounded" placeholder="Benutzerdefiniert"
                                    th:value="${custom}" autocomplete="off"/>
                             <button type="submit" class="btn btn-light"></button>
@@ -447,7 +447,7 @@
                                 th:text="${v.custom}"></button>
                     </div>
                     <div class="input-group rounded" style="float:right">
-                        <form th:action="@{${shoppinglist.id}+'/'+ ${v.id}+'/addCustom'}" method="get">
+                        <form th:action="@{${shoppingList.id}+'/items/'+ ${v.id}+'/custom'}" method="get">
                             <input type="text" id="custom" name="custom" class="form-control rounded" placeholder="Benutzerdefiniert"
                                    th:value="${custom}" autocomplete="off"/>
                             <button type="submit" class="btn btn-light"></button>

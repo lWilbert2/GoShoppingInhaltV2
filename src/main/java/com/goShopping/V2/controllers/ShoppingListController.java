@@ -10,7 +10,6 @@ import java.util.*;
 
 //Operationen auf der Shoppinglist, Alle Funktionen werden aus dem Frontend verwendet
 
-
 @RestController
 @RequestMapping("users/{userId}/lists")
 public class ShoppingListController {
@@ -21,55 +20,30 @@ public class ShoppingListController {
     @Autowired
     private ListItemRepository listItemRepository;
     @Autowired
-    private SpecificationRepository specificationRepository;
-    @Autowired
     private ShopRepository shopRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private AmountRepository amountRepository;
-    @Autowired
     private StatisticItemRepository statisticItemRepository;
 
-    @GetMapping("/{id}/delete")
-    //Lösche Liste mit id {id}
-    //Funktioniert!
-    public void deleteList(@PathVariable("id") Long id) {
-        shoppingListRepo.deleteById(id);
+    @GetMapping("/{listId}/delete")
+    //Lösche Liste mit id
+    public void deleteList(@PathVariable("listId") Long listId) {
+        shoppingListRepo.deleteById(listId);
     }
 
-    @GetMapping("/{id}/addProduct/{productId}")
+
+    //Operationen auf Products auf Liste
+    @GetMapping("/{listId}/products/{productId}/add")
     //Fügt Produkt der Liste hinzu
-    //Funktioniert!
-    public int addProductToList(@PathVariable("productId") long productId, @PathVariable("id") long listId) {
+    public int addProductToList(@PathVariable("productId") long productId, @PathVariable("listId") long listId) {
         ShoppingList s = shoppingListRepo.findById(listId).get();
         s.addProduct(productRepo.findById(productId).get());
         shoppingListRepo.save(s);
         return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId).getQuantity();
     }
-
-    @GetMapping("/{listId}/products/{productId}/getQuantity")
-    //Gibt die Anzahl des Jeweiligen Produktes auf der Liste zurück
-    //Funktioniert!
-    public int getQuantity(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
-        if(listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId)!=null)
-        {
-            return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId).getQuantity();
-        }
-        else return 0;
-
-    }
-
-    //Gibt ListItems der Jeweiligen Liste, des angefragten Produktes zurück
-    @GetMapping("/{listId}/products/{productId}/getItem")
-    public ListItem getItemfromProduct(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
-
-        return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
-    }
-
-    @GetMapping("/{listId}/deleteProduct/{productId}")
+    @GetMapping("/{listId}/products/{productId}/delete")
     //Lösche Produkt, bzw verringere die Anzahl über - auf Template
-    //Funktioniert!
     public int DeleteProductfromList(@PathVariable("productId") long productId, @PathVariable("listId") long listId) {
         ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
         if (listItem.getQuantity() > 0) {
@@ -84,17 +58,33 @@ public class ShoppingListController {
         }
         return 0;
     }
+    @GetMapping("/{listId}/products/{productId}/quantity")
+    //Gibt die Anzahl des Jeweiligen Produktes auf der Liste zurück
+    public int getQuantity(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+        if(listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId)!=null)
+        {
+            return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId).getQuantity();
+        }
+        else return 0;
 
-    @GetMapping("/{id}/deleteItem/{listItemId}")
-    //Lösche Items (nicht Anzahl verändern)
-    //Funktioniert!
-    public void deleteItemfromList(@PathVariable("id") long listId, @PathVariable("listItemId") long listItemId) {
-        listItemRepository.deleteById(listItemId);
     }
 
-    @GetMapping("/{id}/{itemId}/{quantity}/buyItem")
-    //Fügt Spezifikation aus der Liste selbst hinzu
-    public void buyItem(@PathVariable("userId") long userId, @PathVariable("id") long id, @PathVariable("itemId") long itemId, @PathVariable("quantity") int quantity) {
+    //Gibt ListItems der Jeweiligen Liste, des angefragten Produktes zurück
+    @GetMapping("/{listId}/products/{productId}/items")
+    public ListItem getItemfromProduct(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+
+        return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+    }
+
+    @GetMapping("/{listId}/items/{itemId}/delete")
+    //Lösche Items (nicht Anzahl verändern)
+    public void deleteItemfromList(@PathVariable("listId") long listId, @PathVariable("itemId") long itemId) {
+        listItemRepository.deleteById(itemId);
+    }
+
+    @GetMapping("/{listId}/items/{itemId}/buy/{quantity}")
+    //"Kauft" Item --> Item wird von der Liste gelöscht, aber in der Statistic gespeichert.
+    public void buyItem(@PathVariable("userId") long userId, @PathVariable("listId") long listId, @PathVariable("itemId") long itemId, @PathVariable("quantity") int quantity) {
         Product product = listItemRepository.findById(itemId).get().getProduct();
         Statistic statistic = userRepository.findById(userId).get().getStatistics();
         List<StatisticItem> statisticItemList = statistic.getStatisticItemList();
@@ -114,21 +104,20 @@ public class ShoppingListController {
         listItemRepository.deleteById(itemId);
         return;
     }
-
-    @GetMapping("/{id}/changePriority/{itemId}/{value}")
+    @GetMapping("/{listId}/items/{itemId}/priority/{value}")
     //Ändert die Priorität, 3=rot --> Sehr wichtig, 2=gelb --> wichtig, 1=grün --> noch nicht allzu wichtig // Sinnvoll für WGS
-    public List<ListItem> sortByPriority(@PathVariable("id") long id, @PathVariable("itemId") long itemId, @PathVariable("value") int value) {
-        ShoppingList shoppingList = shoppingListRepo.findById(id).get();
+    public List<ListItem> sortByPriority(@PathVariable("listId") long listId, @PathVariable("itemId") long itemId, @PathVariable("value") int value) {
+        ShoppingList shoppingList = shoppingListRepo.findById(listId).get();
         ListItem listItem = listItemRepository.findById(itemId).get();
         listItem.changePriority(value);
         listItemRepository.save(listItem);
         return shoppingList.getList();
     }
 
-    @GetMapping("/{id}/checkStores/shop/{shopId}")
+    @GetMapping("/{listId}/shops/{shopId}/check")
     //CheckStores Welche(und wie viele) Produkte haben die jeweiligen Shops von der Liste
-    public List<ShopItem> CheckShop(@PathVariable("id") long id, @PathVariable("shopId") long shopId) {
-        List<ListItem> OnList = shoppingListRepo.findById(id).get().getList();
+    public List<ShopItem> CheckShop(@PathVariable("listId") long listId, @PathVariable("shopId") long shopId) {
+        List<ListItem> OnList = shoppingListRepo.findById(listId).get().getList();
         List<ShopItem> FoundProductsInShop = new ArrayList<ShopItem>();
         List<ShopItem> AllItemsInShop = shopRepository.findById(shopId).get().getInventory();
         for (ListItem listItem : OnList) {

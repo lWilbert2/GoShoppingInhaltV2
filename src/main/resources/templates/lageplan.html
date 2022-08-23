@@ -20,7 +20,7 @@
         var listId = [[${shoppingList.id}]]
         /*]]>*/
         var Items;
-        fetch('/users/' + userId + '/lists/' + listId + '/checkStores/shop/' + shopId)
+        fetch('/users/' + userId + '/lists/' + listId + '/shops/' + shopId+'/check')
             .then(response => response.json())
             .then(function (data) {
                 console.log(data);

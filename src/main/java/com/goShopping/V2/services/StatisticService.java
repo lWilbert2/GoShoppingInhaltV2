@@ -19,7 +19,7 @@ public class StatisticService {
                 top5[i]=unsorted[i];
             }
             else {
-                top5[i]=new StatisticItem(new Product("not defined",""),0);
+                top5[i]=new StatisticItem(new Product("not defined"),0);
             }
 
         }

@@ -10,10 +10,8 @@ public class Amount {
     private long Id;
     @ManyToMany(mappedBy = "amounts")
     List<Product> productsWithAmount;
-
     @OneToMany(mappedBy = "amount", cascade = CascadeType.ALL)
     private List<ListItem> list;
-
     private String name;
     public Amount(String name) {
         this.name=name;

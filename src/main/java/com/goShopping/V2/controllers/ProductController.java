@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,14 +20,12 @@ public class ProductController {
     private CategoryRepository categoryRepository;
     @Autowired
     private AmountRepository amountRepository;
-    //@Autowired
-    //private FilterRepository allergenRepository;
     @Autowired
     private SpecificationRepository specificationRepository;
 
     @GetMapping("/addProduct")  //Startseite
     public void products(Model model) {
-        productRepo.save(new Product("Frucht Shake", "Japan"));
+        /*productRepo.save(new Product("Frucht Shake", "Japan"));
         /*productRepo.save(new Product("Erdbeeren", "Deutschland"));
         productRepo.save(new Product("Mango", "Puerto Rico"));
         productRepo.save(new Product("Chinakohl", "China"));
@@ -150,7 +147,7 @@ public class ProductController {
     public Product deleteCategoryfromProduct(@PathVariable("id") long id,@PathVariable("categoryId") long categoryId)
     {
         Product product=productRepo.findById(id).get();
-        product.deleteCategory(categoryRepository.findById(categoryId).get());
+        product.removeCategory(categoryRepository.findById(categoryId).get());
         return productRepo.save(product);
     }
     @GetMapping("/{id}/categories")
