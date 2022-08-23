@@ -145,11 +145,11 @@ public class Controllers {
     @GetMapping("/lists/{listId}/search")
     public String Search(@RequestParam String search, Model model, @PathVariable("userId") long userId, @PathVariable("listId") long listId) {
         SearchAndSortService searchAndSortService = new SearchAndSortService();
-        // Product product=searchService.binarySearchObject(productRepo.findAllOrderByNameAsc(), search);
+
         ArrayList<Product> products = searchAndSortService.subStringSubList(productRepo.findAllOrderByNameAsc(), search);
         model.addAttribute("product", products);
         model.addAttribute("user", userRepository.findById(userId).get());
-        model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
+        model.addAttribute("shoppingList", shoppingListRepo.findById(listId).get());
         return "products";
     }
 
