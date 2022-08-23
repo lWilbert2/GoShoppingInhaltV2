@@ -169,7 +169,7 @@
 </div>
 <div class="container">
     <h2 th:text="${shoppinglist.name}"></h2>
-    <div th:each="v: ${shoppinglist.list}">
+    <div th:each="v: ${listItems}">
         <div th:if="${v.priority}==1">
             <div class="card border-success mb-3">
                 <div class="btn-group mr-2" style="float:right" role="group" aria-label="First group">

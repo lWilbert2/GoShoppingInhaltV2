@@ -1,13 +1,15 @@
 package com.goShopping.V2.services;
 
+import com.goShopping.V2.models.ListItem;
 import com.goShopping.V2.models.Product;
+import com.goShopping.V2.models.StatisticItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SearchService {
+public class SearchAndSortService {
 
 
     //Bin�rsuche returnt Index des Objektes in der Liste
@@ -190,6 +192,59 @@ public class SearchService {
         }
         return result;
 
+    }
+
+    public ListItem [] sortbyPrio(List <ListItem> unsorted)
+    {
+        ListItem array[]=unsorted.toArray(new ListItem[0]);
+        quickSort(array,0,unsorted.size()-1);
+        return array;
+    }
+    static int partition(ListItem array[], int low, int high) {
+
+        // choose the rightmost element as pivot
+        int pivot = array[high].getPriority();
+
+        // pointer for greater element
+        int i = (low - 1);
+
+        // traverse through all elements
+        // compare each element with pivot
+        for (int j = low; j < high; j++) {
+            if (array[j].getPriority() >= pivot) {
+
+                // if element smaller than pivot is found
+                // swap it with the greater element pointed by i
+                i++;
+
+                // swapping element at i with element at j
+                ListItem temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+        // swapt the pivot element with the greater element specified by i
+        ListItem temp = array[i + 1];
+        array[i + 1] = array[high];
+        array[high] = temp;
+
+        // return the position from where partition is done
+        return (i + 1);
+    }
+    static void quickSort(ListItem array[], int low, int high) {
+        if (low < high) {
+
+            // find pivot element such that
+            // elements smaller than pivot are on the left
+            // elements greater than pivot are on the right
+            int pi = partition(array, low, high);
+
+            // recursive call on the left of pivot
+            quickSort(array, low, pi - 1);
+
+            // recursive call on the right of pivot
+            quickSort(array, pi + 1, high);
+        }
     }
 
 }

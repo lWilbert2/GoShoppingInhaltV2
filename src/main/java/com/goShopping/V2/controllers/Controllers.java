@@ -1,14 +1,12 @@
 package com.goShopping.V2.controllers;
 
 import com.goShopping.V2.models.*;
-import com.goShopping.V2.services.SearchService;
+import com.goShopping.V2.services.SearchAndSortService;
 import com.goShopping.V2.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -67,18 +65,12 @@ public class Controllers {
     @GetMapping("/lists/{id}")
     //Anzeigen der ListItems der jeweiligen Liste, Gibt eine nach Priorität sortierte Liste zurück
     public String list(@PathVariable("userId") long userId, Model model, @PathVariable("id") Long id) {
-        List<ListItem> listItems = listItemRepository.findAllOrderByPriorityDesc();
-        List<ListItem> sortedListItems = new ArrayList<ListItem>();
-        for (ListItem l : listItems) {
-            if (l.getShoppingList().getId() == id) {
-                sortedListItems.add(l);
-            }
-        }
-        ShoppingList shoppingList = shoppingListRepo.findById(id).get();
-        shoppingList.setList(sortedListItems);
-        shoppingListRepo.save(shoppingList);
+        ShoppingList shoppingList=shoppingListRepo.findById(id).get();
+        SearchAndSortService saSS=new SearchAndSortService();
+        ListItem sorted[]=saSS.sortbyPrio(shoppingList.getList());
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingList);
+        model.addAttribute("listItems", sorted);
         return "productsOnList";
     }
 
@@ -96,11 +88,11 @@ public class Controllers {
     //Anzeige aller Produkte einer bestimmten Kategorie
     //TO DO: Alphabetisch Sortieren
     public String getProductsOfCategory(@PathVariable("userId") long userId, @PathVariable("listId") long listId, @PathVariable("id") long id, Model model) {
-        SearchService searchService=new SearchService();
+        SearchAndSortService searchAndSortService =new SearchAndSortService();
         User user = userRepository.findById(userId).get();
         Category category = categoryRepository.findById(id).get();
         List<ShoppingList> lists = user.getShoppingLists();
-        List <Product> products=searchService.sortList(category.getProductsOfCategory());
+        List <Product> products= searchAndSortService.sortList(category.getProductsOfCategory());
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
         model.addAttribute("category", category);
@@ -159,9 +151,9 @@ public class Controllers {
     @GetMapping("/lists/{listId}/search")
     public String Search(@RequestParam String search, Model model, @PathVariable("userId") long userId, @PathVariable("listId") long listId)
     {
-        SearchService searchService=new SearchService();
+        SearchAndSortService searchAndSortService =new SearchAndSortService();
        // Product product=searchService.binarySearchObject(productRepo.findAllOrderByNameAsc(), search);
-        ArrayList <Product> products=searchService.subStringSubList(productRepo.findAllOrderByNameAsc(), search);
+        ArrayList <Product> products= searchAndSortService.subStringSubList(productRepo.findAllOrderByNameAsc(), search);
         model.addAttribute("product",products);
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
