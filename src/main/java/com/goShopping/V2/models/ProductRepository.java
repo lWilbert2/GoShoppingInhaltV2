@@ -15,4 +15,5 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     @Query("FROM Product ORDER BY name ASC")
     ArrayList<Product> findAllOrderByNameAsc();
+
 }

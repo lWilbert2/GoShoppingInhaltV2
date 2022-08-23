@@ -31,6 +31,7 @@ public class SpecificationAndAmountController {
         listItem.setAmount(amountRepository.findById(amountId).get());
         listItemRepository.save(listItem);
     }
+
     @GetMapping("/{id}/{itemId}/removeAmount")
     //entfernt Amount aus der Liste aus, von der Liste
     public void removeAmount(@PathVariable("itemId") long itemId) {
@@ -38,6 +39,7 @@ public class SpecificationAndAmountController {
         listItem.removeAmount();
         listItemRepository.save(listItem);
     }
+
     @GetMapping("/{id}/{itemId}/removeSpecification")
     //entfernt Spezifikation aus der Liste aus, von der Liste
     public void removeSpecification(@PathVariable("itemId") long itemId) {
@@ -45,6 +47,7 @@ public class SpecificationAndAmountController {
         listItem.removeSpecification();
         listItemRepository.save(listItem);
     }
+
     @GetMapping("/{id}/{itemId}/addSpecification/{specificationId}")
     //Fügt Spezifikation aus der Liste selbst hinzu
     public void addSpecification(@PathVariable("id") long id, @PathVariable("itemId") long itemId, @PathVariable("specificationId") long specificationId) {
@@ -52,37 +55,32 @@ public class SpecificationAndAmountController {
         listItem.setSpecification(specificationRepository.findById(specificationId).get());
         listItemRepository.save(listItem);
     }
-    @GetMapping("/{id}/{itemId}/removeCostum")
+
+    @GetMapping("/{id}/{itemId}/removeCustom")
     public void removeCostum(@PathVariable("itemId") long itemId) {
-        ListItem listitem=listItemRepository.findById(itemId).get();
+        ListItem listitem = listItemRepository.findById(itemId).get();
         listitem.setCustom(null);
         listItemRepository.save(listitem);
     }
 
     //Controller auf Alle Produkte
 
-    @GetMapping("/{id}/products/{productId}/addSpeciFromProduct/{specificationId}")
+    @GetMapping("/{listId}/products/{productId}/addSpeciFromProduct/{specificationId}")
     @ResponseBody
     //Fügt Spezifikation hinzu von der ProduktListe aus
-    public ListItem addSpecificationfromProduct(@PathVariable("id") long id, @PathVariable("productId") long productId, @PathVariable("specificationId") long specificationId) {
-        Product product = productRepo.findById(productId).get();
-        ListItem listItem;
-        List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                if(li.getSpecification()==specificationRepository.findById(specificationId).get())
-                {
-                    li.setSpecification(null);
-                    listItemRepository.save(li);
+    public ListItem addSpecificationfromProduct(@PathVariable("listId") long listId, @PathVariable("productId") long productId, @PathVariable("specificationId") long specificationId) {
+        if(listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId)!=null) {
+            ListItem listItem=listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+                if (listItem.getSpecification() == specificationRepository.findById(specificationId).get()) {
+                    listItem.setSpecification(null);
+                    listItemRepository.save(listItem);
+                } else {
+                    listItem.setSpecification(specificationRepository.findById(specificationId).get());
+                    listItemRepository.save(listItem);
                 }
-                else {
-                    li.setSpecification(specificationRepository.findById(specificationId).get());
-                    listItemRepository.save(li);
-                }
-                return li;
+                return listItem;
             }
-        }
-        listItem = new ListItem(1, productRepo.findById(productId).get(), shoppingListRepo.findById(id).get());
+       ListItem listItem = new ListItem(1, productRepo.findById(productId).get(), shoppingListRepo.findById(listId).get());
         listItem.setSpecification(specificationRepository.findById(specificationId).get());
         listItemRepository.save(listItem);
         return listItem;
@@ -91,46 +89,34 @@ public class SpecificationAndAmountController {
     @GetMapping("/{listId}/products/{productId}/addAmountFromProduct/{amountId}")
     //Fügt Spezifikation hinzu von der ProduktListe aus
     public ListItem addAmountFromProduct(@PathVariable("listId") long listId, @PathVariable("productId") long productId, @PathVariable("amountId") long amountId) {
-        List<ListItem> listItems = shoppingListRepo.findById(listId).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                if(li.getAmount()==amountRepository.findById(amountId).get())
-                {
-                    li.setAmount(null);
-                    listItemRepository.save(li);
-                }
-                else {
-                    li.setAmount(amountRepository.findById(amountId).get());
-                    listItemRepository.save(li);
-                }
-                return li;
+        if(listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId)!=null) {
+            ListItem listItem=listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+            if (listItem.getAmount() == amountRepository.findById(amountId).get()) {
+                listItem.setAmount(null);
+                listItemRepository.save(listItem);
+            } else {
+                listItem.setAmount(amountRepository.findById(amountId).get());
+                listItemRepository.save(listItem);
             }
+            return listItem;
         }
         ListItem listItem = new ListItem(1, productRepo.findById(productId).get(), shoppingListRepo.findById(listId).get());
         listItem.setAmount(amountRepository.findById(amountId).get());
         listItemRepository.save(listItem);
         return listItem;
-    }
-    @GetMapping("/{id}/products/{productId}/removeCostum")
-    public void removeCostumFromProducts(@PathVariable("id") long id, @PathVariable("productId") long productId) {
-        List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                li.setCustom(null);
-                listItemRepository.save(li);
-            }
+}
 
-        }
+    @GetMapping("/{listId}/products/{productId}/removeCustom")
+    public void removeCustomFromProducts(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+        ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+        listItem.setCustom(null);
+        listItemRepository.save(listItem);
     }
-    @GetMapping("/{id}/products/{productId}/addCostum/{costum}")
-    public void addCostumFromProducts(@PathVariable("id") long id, @PathVariable("productId") long productId, @PathVariable("costum") String costum) {
-        List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                li.setCustom(costum);
-                listItemRepository.save(li);
-            }
 
-        }
+    @GetMapping("/{listId}/products/{productId}/addCustom/{custom}")
+    public void addCustomFromProducts(@PathVariable("listId") long listId, @PathVariable("productId") long productId, @PathVariable("custom") String custom) {
+        ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+        listItem.setCustom(custom);
+        listItemRepository.save(listItem);
     }
 }

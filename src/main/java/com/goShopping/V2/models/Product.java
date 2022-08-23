@@ -3,14 +3,13 @@ package com.goShopping.V2.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Product {
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long Id;
+    private long id;
     private String name;
     private String herkunftsland;
    // @ElementCollection
@@ -41,6 +40,10 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "amount_id"))
     List <Amount> amounts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ListItem> listItems;
 
 
     public Product(String name, String herkunftsland) {
@@ -99,6 +102,14 @@ public class Product {
     }
 
     public long getId() {
-        return Id;
+        return id;
+    }
+
+    public List<ListItem> getListItems() {
+        return listItems;
+    }
+
+    public void setListItems(List<ListItem> listItems) {
+        this.listItems = listItems;
     }
 }

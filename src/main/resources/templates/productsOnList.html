@@ -23,11 +23,8 @@
                 url: document.URL + "/deleteProduct/" + productId,
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
+                    window.location.reload();
                 }
-            });
-            $(document).ajaxStop(function () {
-                window.location.reload();
             });
         }
         function changePrio(prio, itemId) {
@@ -93,8 +90,6 @@
                 url: document.URL + '/' + itemId + '/removeSpecification',
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
-                    console.log(itemId);
                 }
             });
             $(document).ajaxStop(function () {

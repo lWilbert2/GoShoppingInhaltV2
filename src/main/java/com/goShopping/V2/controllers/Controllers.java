@@ -65,9 +65,9 @@ public class Controllers {
     @GetMapping("/lists/{id}")
     //Anzeigen der ListItems der jeweiligen Liste, Gibt eine nach Priorität sortierte Liste zurück
     public String list(@PathVariable("userId") long userId, Model model, @PathVariable("id") Long id) {
-        ShoppingList shoppingList=shoppingListRepo.findById(id).get();
-        SearchAndSortService saSS=new SearchAndSortService();
-        ListItem sorted[]=saSS.sortbyPrio(shoppingList.getList());
+        ShoppingList shoppingList = shoppingListRepo.findById(id).get();
+        SearchAndSortService saSS = new SearchAndSortService();
+        ListItem sorted[] = saSS.sortbyPrio(shoppingList.getList());
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingList);
         model.addAttribute("listItems", sorted);
@@ -88,11 +88,11 @@ public class Controllers {
     //Anzeige aller Produkte einer bestimmten Kategorie
     //TO DO: Alphabetisch Sortieren
     public String getProductsOfCategory(@PathVariable("userId") long userId, @PathVariable("listId") long listId, @PathVariable("id") long id, Model model) {
-        SearchAndSortService searchAndSortService =new SearchAndSortService();
+        SearchAndSortService searchAndSortService = new SearchAndSortService();
         User user = userRepository.findById(userId).get();
         Category category = categoryRepository.findById(id).get();
         List<ShoppingList> lists = user.getShoppingLists();
-        List <Product> products= searchAndSortService.sortList(category.getProductsOfCategory());
+        List<Product> products = searchAndSortService.sortList(category.getProductsOfCategory());
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
         model.addAttribute("category", category);
@@ -104,21 +104,19 @@ public class Controllers {
 
     @GetMapping("/lists/{listId}/categories/{categoryId}/products/{productId}/custom")
     //Fügt custom hinzu von der ProduktListe aus
-    public String CustomSpecificationCategoryList(@RequestParam ("custom")String custom, @PathVariable("categoryId") long categoryId, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
-        Product product = productRepo.findById(productId).get();
-        List<ListItem> listItems = shoppingListRepo.findById(listId).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                li.setCustom(custom);
-                listItemRepository.save(li);
-                return "redirect:/users/{userId}/lists/{listId}/categories/{categoryId}/products";
-            }
+    public String CustomSpecificationCategoryList(@RequestParam("custom") String custom, @PathVariable("categoryId") long categoryId, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+        ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+        if (listItem != null) {
+            listItem.setCustom(custom);
+            listItemRepository.save(listItem);
+            return "redirect:/users/{userId}/lists/{listId}/categories/{categoryId}/products";
         }
-        ListItem listitem=new ListItem(1,product, shoppingListRepo.findById(listId).get());
-        listitem.setCustom(custom);
-        listItemRepository.save(listitem);
+        listItem = new ListItem(1, productRepo.findById(productId).get(), shoppingListRepo.findById(listId).get());
+        listItem.setCustom(custom);
+        listItemRepository.save(listItem);
         return "redirect:/users/{userId}/lists/{listId}/categories/{categoryId}/products";
     }
+
     @GetMapping("/lists/{id}/checkStores")  //Aufruf der Seite CheckStores
     public String checkStoreSite(Model model, @PathVariable("id") long id, @PathVariable("userId") long userId) {
         model.addAttribute("shoppingList", shoppingListRepo.findById(id).get());
@@ -126,6 +124,7 @@ public class Controllers {
         model.addAttribute("shop", shopRepository.findAll());
         return "checkStores";
     }
+
     @GetMapping("/lists/{listId}/shop/{shopId}")  //Aufruf der Seite CheckStores
     public String ShopLageplan(Model model, @PathVariable("listId") long listId, @PathVariable("userId") long userId, @PathVariable("shopId") long shopId) {
         model.addAttribute("shoppingList", shoppingListRepo.findById(listId).get());
@@ -148,50 +147,49 @@ public class Controllers {
         return "category";
 
     }
+
     @GetMapping("/lists/{listId}/search")
-    public String Search(@RequestParam String search, Model model, @PathVariable("userId") long userId, @PathVariable("listId") long listId)
-    {
-        SearchAndSortService searchAndSortService =new SearchAndSortService();
-       // Product product=searchService.binarySearchObject(productRepo.findAllOrderByNameAsc(), search);
-        ArrayList <Product> products= searchAndSortService.subStringSubList(productRepo.findAllOrderByNameAsc(), search);
-        model.addAttribute("product",products);
+    public String Search(@RequestParam String search, Model model, @PathVariable("userId") long userId, @PathVariable("listId") long listId) {
+        SearchAndSortService searchAndSortService = new SearchAndSortService();
+        // Product product=searchService.binarySearchObject(productRepo.findAllOrderByNameAsc(), search);
+        ArrayList<Product> products = searchAndSortService.subStringSubList(productRepo.findAllOrderByNameAsc(), search);
+        model.addAttribute("product", products);
         model.addAttribute("user", userRepository.findById(userId).get());
         model.addAttribute("shoppinglist", shoppingListRepo.findById(listId).get());
         return "products";
     }
+
     @GetMapping("lists/{listId}/{itemId}/addCustom")
     public String addCustom(@RequestParam("custom") String custom, @PathVariable("itemId") long itemId, @PathVariable("listId") long listId) {
-        ListItem listitem=listItemRepository.findById(itemId).get();
+        ListItem listitem = listItemRepository.findById(itemId).get();
         listitem.setCustom(custom);
         listItemRepository.save(listitem);
         return "redirect:/users/{userId}/lists/{listId}";
     }
+
     @GetMapping("/lists/{listId}/products/{productId}/custom")
     //Fügt custom hinzu von der ProduktListe aus
-    public String CustomSpecification(@RequestParam ("custom")String custom, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
-        Product product = productRepo.findById(productId).get();
-        List<ListItem> listItems = shoppingListRepo.findById(listId).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                li.setCustom(custom);
-                listItemRepository.save(li);
-                return "redirect:/users/{userId}/lists/{listId}/products";
-            }
+    public String CustomSpecification(@RequestParam("custom") String custom, @PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+
+        ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+        if (listItem != null) {
+            listItem.setCustom(custom);
+            listItemRepository.save(listItem);
+            return "redirect:/users/{userId}/lists/{listId}/products";
         }
-        ListItem listitem=new ListItem(1,product, shoppingListRepo.findById(listId).get());
-        listitem.setCustom(custom);
-        listItemRepository.save(listitem);
-        return "redirect:/users/{userId}/lists/{listId}/products";
-    }
+        listItem = new ListItem(1, productRepo.findById(productId).get(), shoppingListRepo.findById(listId).get());
+        listItem.setCustom(custom);
+        listItemRepository.save(listItem);
+        return"redirect:/users/{userId}/lists/{listId}/products";
+}
 
     @GetMapping("/statistic")
-    public String getStatistics(Model model, @PathVariable("userId") long userId)
-    {
-        StatisticService t5s=new StatisticService();
-        StatisticItem [] statisticItems= t5s.getTop5(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
+    public String getStatistics(Model model, @PathVariable("userId") long userId) {
+        StatisticService t5s = new StatisticService();
+        StatisticItem[] statisticItems = t5s.getTop5(userRepository.findById(userId).get().getStatistics().getStatisticItemList());
         //List <StatisticShop> statisticShops=userRepository.findById(userId).get().getStatistics().getStatisticShops();
-        model.addAttribute("statisticItem",statisticItems);
-        model.addAttribute("user",userRepository.findById(userId).get());
+        model.addAttribute("statisticItem", statisticItems);
+        model.addAttribute("user", userRepository.findById(userId).get());
         //model.addAttribute("statisticShop",statisticShops);
         return "statistic";
     }

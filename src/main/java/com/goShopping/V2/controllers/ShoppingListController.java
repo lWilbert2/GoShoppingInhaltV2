@@ -2,6 +2,7 @@ package com.goShopping.V2.controllers;
 
 import com.goShopping.V2.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,71 +45,53 @@ public class ShoppingListController {
         ShoppingList s = shoppingListRepo.findById(listId).get();
         s.addProduct(productRepo.findById(productId).get());
         shoppingListRepo.save(s);
-        List<ListItem> listItems = s.getList();
-        for (ListItem listItem : listItems) {
-            if (listItem.getProduct().getId() == productId) {
+        return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId).getQuantity();
+    }
+
+    @GetMapping("/{listId}/products/{productId}/getQuantity")
+    //Gibt die Anzahl des Jeweiligen Produktes auf der Liste zurück
+    //Funktioniert!
+    public int getQuantity(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+        if(listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId)!=null)
+        {
+            return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId).getQuantity();
+        }
+        else return 0;
+
+    }
+
+    //Gibt ListItems der Jeweiligen Liste, des angefragten Produktes zurück
+    @GetMapping("/{listId}/products/{productId}/getItem")
+    public ListItem getItemfromProduct(@PathVariable("listId") long listId, @PathVariable("productId") long productId) {
+
+        return listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+    }
+
+    @GetMapping("/{listId}/deleteProduct/{productId}")
+    //Lösche Produkt, bzw verringere die Anzahl über - auf Template
+    //Funktioniert!
+    public int DeleteProductfromList(@PathVariable("productId") long productId, @PathVariable("listId") long listId) {
+        ListItem listItem = listItemRepository.findByShoppingList_IdAndProduct_Id(listId, productId);
+        if (listItem.getQuantity() > 0) {
+            listItem.setQuantity(listItem.getQuantity() - 1);
+            if (listItem.getQuantity() == 0) {
+                listItemRepository.deleteById(listItem.getId());
+                return 0;
+            } else {
+                listItemRepository.save(listItem);
                 return listItem.getQuantity();
             }
         }
         return 0;
     }
 
-    @GetMapping("/{id}/products/{productId}/getQuantity")
-    //Gibt die Anzahl des Jeweiligen Produktes auf der Liste zurück
-    //Funktioniert!
-    public int getQuantity(@PathVariable("id") long id, @PathVariable("productId") long productId) {
-        List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                return li.getQuantity();
-            }
-        }
-        return 0;
-    }
-
-    @GetMapping("/{id}/products/{productId}/getItem")
-    //Gibt die Anzahl des Jeweiligen Produktes auf der Liste zurück
-    //Funktioniert!
-    public ListItem getItemfromProduct(@PathVariable("id") long id, @PathVariable("productId") long productId) {
-        List<ListItem> listItems = shoppingListRepo.findById(id).get().getList();
-        for (ListItem li : listItems) {
-            if (li.getProduct().getId() == productId) {
-                return li;
-            }
-        }
-        return null;
-    }
-
-    @GetMapping("/{id}/deleteProduct/{productId}")
-    //Lösche Produkt, bzw verringere die Anzahl über - auf Template
-    //Funktioniert!
-    public int DeleteProductfromList(@PathVariable("productId") long productId, @PathVariable("id") long listId) {
-        ShoppingList shoppingList = shoppingListRepo.findById(listId).get();
-        List<ListItem> listItems = shoppingList.getList();
-        for (ListItem listItem : listItems) {
-            if (listItem.getProduct().getId() == productId) {
-                if (listItem.getQuantity() > 0) {
-                    listItem.setQuantity(listItem.getQuantity() - 1);
-                    if (listItem.getQuantity() == 0) {
-                        shoppingList.getList().remove(listItem);
-                        shoppingListRepo.save(shoppingList);
-                        listItemRepository.deleteById(listItem.getId());
-                        return 0;
-                    } else {
-                        listItemRepository.save(listItem);
-                        return listItem.getQuantity();
-                    }
-                }
-            }
-        }
-        return 0;
-    }
     @GetMapping("/{id}/deleteItem/{listItemId}")
     //Lösche Items (nicht Anzahl verändern)
     //Funktioniert!
     public void deleteItemfromList(@PathVariable("id") long listId, @PathVariable("listItemId") long listItemId) {
         listItemRepository.deleteById(listItemId);
     }
+
     @GetMapping("/{id}/{itemId}/{quantity}/buyItem")
     //Fügt Spezifikation aus der Liste selbst hinzu
     public void buyItem(@PathVariable("userId") long userId, @PathVariable("id") long id, @PathVariable("itemId") long itemId, @PathVariable("quantity") int quantity) {
@@ -131,6 +114,7 @@ public class ShoppingListController {
         listItemRepository.deleteById(itemId);
         return;
     }
+
     @GetMapping("/{id}/changePriority/{itemId}/{value}")
     //Ändert die Priorität, 3=rot --> Sehr wichtig, 2=gelb --> wichtig, 1=grün --> noch nicht allzu wichtig // Sinnvoll für WGS
     public List<ListItem> sortByPriority(@PathVariable("id") long id, @PathVariable("itemId") long itemId, @PathVariable("value") int value) {
