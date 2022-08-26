@@ -3,55 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<div th:each="u:${shop}">
-    <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/shops/'+${u.id}}">
-        <button class="btn btn-light" th:text="${u.name}">
-        </button>
-    </a>
-    <script th:inline="javaScript">
-        (function(){
-            /*<![CDATA[*/
-            var shopId = [[${u.id}]];
-            var userId = [[${user.id}]];
-            var listId = [[${shoppingList.id}]]
-            /*]]>*/
-            $.ajax({
-                type: "GET",
-                url: '/users/'+userId+"/lists/" +listId+'/shops/'+ shopId+"/check",
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    var numberItems=document.createElement("p1");
-                    numberItems.innerHTML=data.length;
-                    var parentNum=document.getElementById("num"+shopId);
-                    parentNum.appendChild(numberItems)
+<div class="card-group">
+    <div class="card" style="width: 18rem;" th:each="u:${shop}">
+        <div class="card mb-3">
+            <div class="card-body">
+                <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/shops/'+${u.id}}">
+                <button class="btn btn-light btn-lg btn-block" th:text="${u.name}">
+                </button>
+                </a>
+                <p1 th:id="'num'+${u.id}"></p1>
+                <p1 th:text="'/'+${shoppingList.List.size}"></p1>
+                <p class="card-text">
+                <div th:id="'items'+${u.id}"></div>
+            </div>
+        </div>
+        <script th:inline="javaScript">
+            (function () {
+                /*<![CDATA[*/
+                var shopId = [[${u.id}]];
+                var userId = [[${user.id}]];
+                var listId = [[${shoppingList.id}]]
+                /*]]>*/
+                $.ajax({
+                    type: "GET",
+                    url: '/users/' + userId + "/lists/" + listId + '/shops/' + shopId + "/check",
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        var numberItems = document.createElement("p1");
+                        numberItems.innerHTML = data.length;
+                        var parentNum = document.getElementById("num" + shopId);
+                        parentNum.appendChild(numberItems)
 
-                    for(let i=0; i<data.length; i++)
-                    {
-                        var ListeItems=document.createElement("div");
-                        ListeItems.innerHTML=data[i].product.name;
-                        var parentList=document.getElementById("items"+shopId);
-                        parentList.appendChild(ListeItems);
-                        console.log(data[i].product.name);
+                        for (let i = 0; i < data.length; i++) {
+                            var ListeItems = document.createElement("div");
+                            ListeItems.innerHTML = data[i].product.name;
+                            var parentList = document.getElementById("items" + shopId);
+                            parentList.appendChild(ListeItems);
+                            console.log(data[i].product.name);
+                        }
                     }
-                }
-            });
-        })();
-    </script>
-    <div>
-    <p1 th:id="'num'+${u.id}"></p1>
-    <p1 th:text="'/'+${shoppingList.List.size}"></p1>
+                });
+            })();
+        </script>
+        </br>
     </div>
-    <div th:id="'items'+${u.id}"></div>
-    </br>
-
 </div>
 
+<div>
+    <a style="color: inherit" th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}}">
+        <button class="btn btn-light btn-lg btn-block" align="center"> Back to ShoppingList
+        </button>
+    </a>
+</div>
 
-<a th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}}"> Back to ShoppingList </a>
 
 </body>
 </html>

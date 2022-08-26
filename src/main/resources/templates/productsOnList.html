@@ -166,14 +166,14 @@
     <h2 th:text="${shoppingList.name}"></h2>
     <div th:each="v: ${listItems}">
         <div th:if="${v.priority}==1">
-            <div class="card border-success mb-3">
+            <div class="card border-success mb-3" style="border-width:3px">
                 <div class="btn-group mr-2" style="float:right" role="group" aria-label="First group">
                     <button type="button" class="btn btn-success"
-                            th:onclick="changePrio(1,[[${v.id}]])"></button>
+                            th:onclick="changePrio(1,[[${v.id}]])" th:text="'niedrige Priorität'"></button>
                     <button type="button" class="btn btn-warning"
-                            th:onclick="changePrio(2,[[${v.id}]])"></button>
+                            th:onclick="changePrio(2,[[${v.id}]])" th:text="'mittlere Priorität'"></button>
                     <button type="button" class="btn btn-danger"
-                            th:onclick="changePrio(3,[[${v.id}]])"></button>
+                            th:onclick="changePrio(3,[[${v.id}]])" th:text="'hohe Priorität'"></button>
                 </div>
                 <b class="card-header" th:text="${v.product.name}"></b>
                 <div style="float:right" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -263,14 +263,14 @@
             </div>
         </div>
         <div th:if="${v.priority}==2">
-            <div class="card border-warning mb-3">
+            <div class="card border-warning mb-3" style="border-width:3px">
                 <div class="btn-group mr-2" style="float:right" role="group" aria-label="First group">
                     <button type="button" class="btn btn-success"
-                            th:onclick="changePrio(1,[[${v.id}]])"></button>
+                            th:onclick="changePrio(1,[[${v.id}]])" th:text="'niedrige Priorität'"></button>
                     <button type="button" class="btn btn-warning"
-                            th:onclick="changePrio(2,[[${v.id}]])"></button>
+                            th:onclick="changePrio(2,[[${v.id}]])" th:text="'mittlere Priorität'"></button>
                     <button type="button" class="btn btn-danger"
-                            th:onclick="changePrio(3,[[${v.id}]])"></button>
+                            th:onclick="changePrio(3,[[${v.id}]])" th:text="'hohe Priorität'"></button>
                 </div>
                 <b class="card-header" th:text="${v.product.name}"></b>
                 <div style="float:right" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -360,14 +360,14 @@
             </div>
         </div>
         <div th:if="${v.priority}==3">
-            <div class="card border-danger mb-3">
+            <div class="card border-danger mb-3" style="border-width:3px">
                 <div class="btn-group mr-2" style="float:right" role="group" aria-label="First group">
                     <button type="button" class="btn btn-success"
-                            th:onclick="changePrio(1,[[${v.id}]])"></button>
+                            th:onclick="changePrio(1,[[${v.id}]])" th:text="'niedrige Priorität'"></button>
                     <button type="button" class="btn btn-warning"
-                            th:onclick="changePrio(2,[[${v.id}]])"></button>
+                            th:onclick="changePrio(2,[[${v.id}]])" th:text="'mittlere Priorität'"></button>
                     <button type="button" class="btn btn-danger"
-                            th:onclick="changePrio(3,[[${v.id}]])"></button>
+                            th:onclick="changePrio(3,[[${v.id}]])" th:text="'hohe Priorität'"></button>
                 </div>
                 <b class="card-header" th:text="${v.product.name}"></b>
                 <div style="float:right" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
