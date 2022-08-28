@@ -8,7 +8,7 @@ public class Statistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne
+    @OneToOne(mappedBy = "statistics")
     private User user;
     @OneToMany(mappedBy = "statistic", cascade = CascadeType.ALL)
     List<StatisticItem> statisticItems;

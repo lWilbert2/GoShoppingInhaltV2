@@ -17,9 +17,10 @@ public class User {
     @OneToOne
     private Statistic statistics;
 
-    public User(String name)
+    public User(String name, Statistic statistics)
     {
         this.name=name;
+        this.statistics=statistics;
     }
     protected User() {}
 

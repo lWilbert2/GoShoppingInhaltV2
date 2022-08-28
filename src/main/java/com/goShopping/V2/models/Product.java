@@ -13,9 +13,6 @@ public class Product {
     private String name;
     private String herkunftsland;
 
-    @ManyToMany(mappedBy = "inventory")
-    @JsonIgnore
-    List <Shop> shops;
 
     @ManyToMany(mappedBy = "seasonalProducts")
     @JsonIgnore

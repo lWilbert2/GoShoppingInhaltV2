@@ -10,14 +10,11 @@ public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<ShopItem> inventory;
     private String name;
     private String address;
 
-    @ManyToMany
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "shop_id"),
-            inverseJoinColumns = @JoinColumn(name = "shop_item_id"))
-    private List<ShopItem> inventory;
     protected Shop() {}
 
     public Shop(String name, String address) {

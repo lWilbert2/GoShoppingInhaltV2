@@ -9,10 +9,11 @@
         /*<![CDATA[*/
         var userId = [[${user.id}]];
         var listId = [[${shoppingList.id}]]
+
         /*]]>*/
         function changeSpecification(productId, specificationId) {
             var quantity;
-            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/specifications/' + specificationId +'/set')
+            fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/specifications/' + specificationId + '/set')
                 .then(response => response.json())
                 .then(function (data) {
                     quantity = data.quantity;
@@ -30,7 +31,7 @@
             var quantity;
             $.ajax({
                 type: "GET",
-                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/amounts/' + amountId +'/set',
+                url: '/users/' + userId + '/lists/' + listId + '/products/' + productId + '/amounts/' + amountId + '/set',
                 dataType: 'json',
                 success: function (res) {
                     quantity = res.quantity;
@@ -41,6 +42,7 @@
                 }
             });
         }
+
         function removeCustom(productId) {
             $.ajax({
                 type: "GET",
@@ -57,7 +59,7 @@
         function addP(productId) {
             $.ajax({
                 type: "GET",
-                url: "products/" + productId+ "/add",
+                url: "products/" + productId + "/add",
                 dataType: 'json',
                 success: function (res) {
                     var quantity = res;
@@ -65,10 +67,11 @@
                 }
             });
         }
+
         function deleteP(productId) {
             $.ajax({
                 type: "GET",
-                url: "products/" + productId+"/delete",
+                url: "products/" + productId + "/delete",
                 dataType: 'json',
                 success: function (res) {
                     console.log(res);
@@ -80,19 +83,6 @@
                 }
             });
         }
-
-        function addCustom(custom) {
-            console.log(custom);
-            $.ajax({
-                type: "GET",
-                url: "/users/" + userId + "/lists/" + listId + "/products/" + productId + "/custom/" + custom +"/add",
-                dataType: 'json',
-                success: function (res) {
-                    console.log(res);
-                }
-            });
-        }
-
         function getItem(productId, speciId, type) {
             var item;
             fetch('/users/' + userId + '/lists/' + listId + '/products/' + productId + '/items')
@@ -158,7 +148,7 @@
         <div class="col-xs">
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/3/products'}">
-                <button class="btn btn-light">Alkohol
+                <button class="btn btn-light">Milch Produkte
                 </button>
             </a>
         </div>
@@ -166,7 +156,7 @@
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/4/products'}">
                 <button class="btn btn-light">
-                    Milch Produkte
+                    Gemüse
                 </button>
             </a>
         </div>
@@ -174,7 +164,7 @@
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/5/products'}">
                 <button class="btn btn-light">
-                    Gemüse
+                    Obst
                 </button>
             </a>
         </div>
@@ -182,48 +172,51 @@
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/6/products'}">
                 <button class="btn btn-light">
-                    Obst
+                    Getränke
                 </button>
             </a>
-        </div> &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
         <div class="col-xs">
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/7/products'}">
                 <button class="btn btn-light">
-                    Getränke
+                    Speiseschrank
                 </button>
             </a>
-        </div> &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
         <div class="col-xs">
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/8/products'}">
                 <button class="btn btn-light">
-                    Speiseschrank
+                    Snacks
                 </button>
             </a>
+        </div>
+        <div class="col-xs">
             <a style="color: inherit"
                th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/9/products'}">
                 <button class="btn btn-light">
-                    Drogerie Artikel
+                    Sonstiges
                 </button>
             </a>
-            <a style="color: inherit"
-               th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/10/products'}">
-                <button class="btn btn-light">
-                    Saisonal
-                </button>
-            </a>
-        </div> &nbsp;&nbsp;&nbsp;&nbsp;
-        <div class="col-xs">
-            <div class="input-group rounded">
-                <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/search'}" method="get">
-                    <input type="text" id="search" name="search" class="form-control rounded" placeholder="Search"
-                           th:value="${search}" autocomplete="off"/>
-                    <button type="submit" class="btn btn-dark"></button>
-                </form>
-            </div>
+        </div>
+        <a style="color: inherit"
+           th:href="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/categories/10/products'}">
+            <button class="btn btn-light">
+                Saisonal
+            </button>
+        </a>
+    </div>
+    <div class="col-xs">
+        <div class="input-group rounded">
+            <form th:action="@{'/users/'+${user.id}+'/lists/'+${shoppingList.id}+'/search'}" method="get">
+                <input type="text" id="search" name="search" class="form-control rounded" placeholder="Search"
+                       th:value="${search}" autocomplete="off"/>
+                <button type="submit" class="btn btn-dark"></button>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <div class="container">Alles</div>
 <div class="container" th:each="u: ${product}" th:id="'product'+${u.id}">
@@ -300,11 +293,11 @@
                            th:value="${custom}" autocomplete="off"/>
                     <button type="submit" class="btn btn-light"></button>
                 </form>
-               <!-- <form th:onsubmit="addCustom([[${costum}]])">
-                    <input type="text" id="custom" name="custom" class="form-control rounded"
-                           placeholder="Benutzerdefiniert"
-                           th:value="${custom}" autocomplete="off"/>
-                </form>-->
+                <!-- <form th:onsubmit="addCustom([[${costum}]])">
+                     <input type="text" id="custom" name="custom" class="form-control rounded"
+                            placeholder="Benutzerdefiniert"
+                            th:value="${custom}" autocomplete="off"/>
+                 </form>-->
             </div>
         </div>
     </div>
