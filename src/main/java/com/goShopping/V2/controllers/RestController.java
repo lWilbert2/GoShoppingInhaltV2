@@ -497,9 +497,6 @@ public class RestController {
         //und ShopItems
         for (Product product : Gemüse) {
             product.addAmount(amountRepository.findById(2L).get());
-            product.addAmount(amountRepository.findById(3L).get());
-            product.addAmount(amountRepository.findById(4L).get());
-            product.addAmount(amountRepository.findById(5L).get());
             product.addAmount(amountRepository.findById(6L).get());
             productRepo.save(product);
             for (long j = 1; j < 5; j++) {
@@ -512,9 +509,6 @@ public class RestController {
         }
         for (Product product : Obst) {
             product.addAmount(amountRepository.findById(2L).get());
-            product.addAmount(amountRepository.findById(3L).get());
-            product.addAmount(amountRepository.findById(4L).get());
-            product.addAmount(amountRepository.findById(5L).get());
             product.addAmount(amountRepository.findById(6L).get());
             productRepo.save(product);
             for (long j = 1; j < 5; j++) {
@@ -546,7 +540,6 @@ public class RestController {
         List<Product> Speiseschrank = categoryRepository.findById(7L).get().getProductsOfCategory();
         for (Product product : Speiseschrank) {
             product.addAmount(amountRepository.findById(2L).get());
-            product.addAmount(amountRepository.findById(3L).get());
             product.addAmount(amountRepository.findById(6L).get());
             productRepo.save(product);
             for (long j = 1; j < 5; j++) {
@@ -632,9 +625,6 @@ public class RestController {
         }
         for (Product product : Fleisch) {
             product.addAmount(amountRepository.findById(2L).get());
-            product.addAmount(amountRepository.findById(3L).get());
-            product.addAmount(amountRepository.findById(4L).get());
-            product.addAmount(amountRepository.findById(5L).get());
             product.addAmount(amountRepository.findById(6L).get());
             productRepo.save(product);
             for (long j = 1; j < 5; j++) {
@@ -654,7 +644,6 @@ public class RestController {
             } else {
                 //Milchprodukte in Gramm
                 product.addAmount(amountRepository.findById(2L).get());
-                product.addAmount(amountRepository.findById(3L).get());
                 product.addAmount(amountRepository.findById(4L).get());
             }
             for (long j = 1; j < 5; j++) {
@@ -676,7 +665,6 @@ public class RestController {
                 product.addAmount(amountRepository.findById(12L).get());
             } else { //Rest in Gramm
                 product.addAmount(amountRepository.findById(2L).get());
-                product.addAmount(amountRepository.findById(3L).get());
                 product.addAmount(amountRepository.findById(4L).get());
             }
             for (long j = 1; j < 5; j++) {
