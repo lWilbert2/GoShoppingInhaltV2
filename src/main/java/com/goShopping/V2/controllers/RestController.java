@@ -226,7 +226,7 @@ public class RestController {
 
 
         //Add Categories
-        categoryRepository.save(new Category("Vegane/ Vegetarische Ersatzprodukte"));
+        categoryRepository.save(new Category("VegetarischVeganeErsatzprodukte"));
         categoryRepository.save(new Category("Fleisch"));
         categoryRepository.save(new Category("Milchprodukte"));
         categoryRepository.save(new Category("Gemüse"));
