@@ -34,6 +34,7 @@ public class ShoppingListController {
 
 
     //Operationen auf Products auf Liste
+
     @GetMapping("/{listId}/products/{productId}/add")
     //Fügt Produkt der Liste hinzu
     public int addProductToList(@PathVariable("productId") long productId, @PathVariable("listId") long listId) {
